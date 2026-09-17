@@ -2,35 +2,24 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carnet du Maître Souffleur</title>
-  
-  <!-- Configuration PWA -->
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2d1810">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MAÎTRE SOUFFLEUR - Codex des Révélations</title>
 
-  <!-- Polices Google -->
+  <!-- Polices Google identiques -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=IM+Fell+English:ital@0;1&family=Indie+Flower&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --leather-dark: #1a0f0a;
-      --leather-main: #2d1810;
-      --leather-border: #4a2818;
-      --gold-accent: #c5a059;
-      --gold-bright: #e6c687;
-      --parchment-shadow: #c2aa7c;
-      --ink-dark: #1c120c;
-      --ink-red: #8b1e1e;
-      
-      --font-title: 'Cinzel Decorative', serif;
-      --font-body: 'IM Fell English', serif;
-      --font-hand: 'Indie Flower', cursive;
+      --bg-dark: #000000;
+      --leather-outer: #1c0904;
+      --leather-inner: #240a04;
+      --gold-light: #fbe09e;
+      --gold-mid: #cda252;
+      --gold-dark: #7a581e;
+      --ink-red: #7c1a12;
+      --tab-active-bg: #f9eed7;
     }
 
     * {
@@ -38,194 +27,196 @@
       margin: 0;
       padding: 0;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      background-color: var(--leather-dark);
-      background-image: radial-gradient(circle at center, #2a1810 0%, #0d0705 100%);
-      color: var(--ink-dark);
-      font-family: var(--font-body);
+      background-color: var(--bg-dark);
+      color: #e0d0b0;
+      font-family: 'Cinzel', serif;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 12px;
+      overflow: hidden;
     }
 
-    /* ETUI EN CUIR SURPIQUÉ */
-    .grimoire-wrapper {
-      background: var(--leather-main);
-      border: 3px solid var(--leather-border);
+    /* CONTENEUR CADRE CUIR MOBILE */
+    .phone-container {
+      width: 100vw;
+      height: 100vh;
+      max-width: 430px;
+      max-height: 880px;
+      background: #110502;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* BORDURE CUIR SOMBRE + COUTURE FINE */
+    .grimoire-frame {
+      flex: 1;
+      background: radial-gradient(circle at center, #2e0d05 0%, #120401 100%);
+      border: 3px solid #2d1008;
       border-radius: 18px;
       padding: 12px;
-      box-shadow: 
-        0 20px 50px rgba(0,0,0,0.9),
-        inset 0 0 15px rgba(0,0,0,0.8),
-        0 0 0 2px var(--gold-accent);
-      width: 100%;
-      max-width: 440px;
-      height: 720px;
       position: relative;
       display: flex;
       flex-direction: column;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.95);
     }
 
-    .grimoire-wrapper::before {
+    /* Pointillé doré tout autour (Couture) */
+    .grimoire-frame::before {
       content: '';
       position: absolute;
-      top: 5px; bottom: 5px; left: 5px; right: 5px;
-      border: 1px dashed var(--gold-accent);
+      top: 6px; bottom: 6px; left: 6px; right: 6px;
+      border: 1px dashed rgba(205, 162, 82, 0.35);
       border-radius: 14px;
-      opacity: 0.5;
       pointer-events: none;
+      z-index: 2;
     }
 
-    /* FEUILLE DE PARCHEMIN */
-    .parchment {
-      background: linear-gradient(135deg, #f7eed8 0%, #e8d5b5 50%, #d8c29d 100%);
-      border-radius: 8px;
+    /* CADRE D'ONGLETS INTERNE */
+    .grimoire-inner {
       flex: 1;
+      background: radial-gradient(ellipse at center, #270c05 0%, #0e0301 100%);
+      border: 1px solid rgba(205, 162, 82, 0.25);
+      border-radius: 10px;
+      position: relative;
       display: flex;
       flex-direction: column;
-      position: relative;
       overflow: hidden;
-      box-shadow: 
-        inset 0 0 40px var(--parchment-shadow),
-        inset 0 0 80px rgba(74, 40, 24, 0.3),
-        0 5px 15px rgba(0,0,0,0.5);
     }
 
-    /* En-tête */
-    .header {
-      padding: 18px 12px 10px;
-      text-align: center;
-      border-bottom: 2px solid var(--gold-accent);
-      background: linear-gradient(to bottom, rgba(197, 160, 89, 0.15), transparent);
+    /* COINS METALLIQUES DORÉS EN L (CONFORMES À LA PHOTO) */
+    .corner {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      border: 2.5px solid var(--gold-mid);
+      opacity: 0.75;
+      pointer-events: none;
+      z-index: 5;
     }
+    .corner-tl { top: 22px; left: 22px; border-right: none; border-bottom: none; }
+    .corner-tr { top: 22px; right: 22px; border-left: none; border-bottom: none; }
+    .corner-bl { bottom: 22px; left: 22px; border-right: none; border-top: none; }
+    .corner-br { bottom: 22px; right: 22px; border-left: none; border-top: none; }
 
-    .header h1 {
-      font-family: var(--font-title);
-      font-size: 1.1rem;
-      color: var(--ink-red);
-      text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
-      letter-spacing: 1px;
-    }
-
-    .header-decoration {
-      font-size: 0.75rem;
-      color: var(--gold-accent);
-      margin-top: 2px;
-    }
-
-    /* Contenu scrollable */
+    /* CONTENEUR DE PAGES */
     .content-area {
       flex: 1;
-      padding: 16px;
-      overflow-y: auto;
+      position: relative;
+      overflow: hidden;
     }
 
     .tab-content {
       display: none;
-      animation: fadeIn 0.3s ease-in-out;
+      width: 100%;
+      height: 100%;
     }
 
     .tab-content.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ONGLET COUVERTURE */
-    .cover-box {
-      text-align: center;
-      padding: 20px 10px;
-    }
-
-    .cover-subtitle {
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-      color: var(--gold-accent);
-      letter-spacing: 2px;
-      margin-bottom: 15px;
-    }
-
-    .cover-title {
-      font-family: var(--font-title);
-      font-size: 1.6rem;
-      color: var(--ink-red);
-      line-height: 1.3;
-      margin-bottom: 20px;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }
-
-    .cover-emblem {
-      width: 110px;
-      height: 110px;
-      margin: 15px auto 25px;
-      border-radius: 50%;
-      border: 3px double var(--gold-accent);
-      background: rgba(139, 30, 30, 0.1);
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      flex-direction: column;
     }
 
-    .btn-open {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(to bottom, #8b1e1e, #681212);
-      color: #f7eed8;
-      border: 1px solid var(--gold-accent);
-      border-radius: 6px;
-      font-family: var(--font-title);
-      font-size: 0.85rem;
+    /* =======================================
+       PAGE COUVERTURE (EXACTEMENT LA PHOTO)
+       ======================================= */
+    .cover-page {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* PLAQUE CENTRALE EN CUIR EMBOSSÉ */
+    .title-plate {
+      background: linear-gradient(165deg, #200803 0%, #0c0201 100%);
+      border: 1px solid rgba(205, 162, 82, 0.4);
+      border-radius: 16px;
+      padding: 38px 24px;
+      width: 86%;
+      box-shadow: 
+        inset 5px 5px 12px rgba(0,0,0,0.95),
+        inset -2px -2px 8px rgba(205, 162, 82, 0.12),
+        0 10px 25px rgba(0,0,0,0.85);
+      margin-bottom: 50px;
+    }
+
+    /* TITRE MAÎTRE SOUFFLEUR */
+    .title-plate h1 {
+      font-family: 'Cinzel', serif;
+      font-weight: 800;
+      font-size: 1.7rem;
+      letter-spacing: 2px;
+      line-height: 1.25;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #fff3cf 0%, #d2a856 50%, #7d591e 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0px 2px 3px rgba(0,0,0,0.9));
+    }
+
+    /* SOUS-TITRE ITALIQUE */
+    .title-plate .subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.92rem;
+      color: #c7a052;
+      margin-top: 18px;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+    }
+
+    /* BOUTON PILULE BOMBÉ "OUVRIR LE GRIMOIRE" */
+    .btn-open-grimoire {
+      background: linear-gradient(180deg, #cba152 0%, #997433 50%, #63471c 100%);
+      border: 1px solid #fce3a6;
+      color: #120502;
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      padding: 14px 34px;
+      border-radius: 25px;
       cursor: pointer;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      box-shadow: 
+        0 8px 18px rgba(0,0,0,0.85),
+        inset 0 1px 2px rgba(255,255,255,0.7);
+      text-transform: uppercase;
       transition: transform 0.1s;
     }
 
-    .btn-open:active {
-      transform: translateY(2px);
+    .btn-open-grimoire:active {
+      transform: scale(0.96);
     }
 
-    /* JOURNAL */
-    .journal-entry {
-      margin-bottom: 15px;
+    /* =======================================
+       PAGES INTERNES (PARCHEMIN CLAIR)
+       ======================================= */
+    .internal-page {
+      background: linear-gradient(135deg, #f5e9ce 0%, #e2ceaa 100%);
+      color: #1a0c06;
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .internal-page h2 {
       font-size: 1rem;
-      line-height: 1.4;
-    }
-
-    .journal-entry h2 {
-      font-family: var(--font-title);
-      font-size: 0.85rem;
-      color: var(--ink-dark);
-      border-bottom: 1px solid var(--ink-dark);
-      padding-bottom: 3px;
-      margin-bottom: 8px;
-    }
-
-    .handwritten {
-      font-family: var(--font-hand);
-      font-size: 1.25rem;
       color: var(--ink-red);
-    }
-
-    .illustration-frame {
-      border: 2px solid var(--gold-accent);
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.04);
-      border-radius: 4px;
       text-align: center;
-      margin: 12px 0;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--gold-dark);
+      padding-bottom: 5px;
     }
 
-    /* GRILLE ALPHABET (26 LETTRES) */
     .alphabet-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -233,236 +224,159 @@
     }
 
     .symbol-card {
-      background: rgba(255, 255, 255, 0.4);
-      border: 1px solid var(--gold-accent);
-      border-radius: 6px;
-      padding: 6px 4px;
+      background: rgba(0,0,0,0.04);
+      border: 1px solid var(--gold-dark);
+      border-radius: 4px;
+      padding: 8px;
       text-align: center;
       cursor: pointer;
     }
 
-    .symbol-card:active {
-      transform: scale(0.95);
-    }
+    .symbol-card .glyph { font-size: 1.3rem; font-weight: bold; display: block; }
+    .symbol-card .letter { font-size: 0.8rem; color: var(--ink-red); font-weight: bold; display: block; }
 
-    .symbol-card .glyph {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: var(--ink-dark);
-      display: block;
-      height: 28px;
-      line-height: 28px;
-    }
-
-    .symbol-card .letter {
-      font-family: var(--font-title);
-      font-size: 0.85rem;
-      color: var(--ink-red);
-      border-top: 1px dotted var(--gold-accent);
-      padding-top: 2px;
-      display: block;
-    }
-
-    /* DÉCODEUR */
     .decoder-box {
-      background: rgba(0, 0, 0, 0.06);
-      border: 2px solid var(--gold-accent);
+      background: rgba(0,0,0,0.06);
+      border: 1px solid var(--gold-dark);
       border-radius: 6px;
       padding: 12px;
-      min-height: 70px;
+      min-height: 60px;
       margin-bottom: 12px;
-    }
-
-    .decoder-display-symbols {
-      font-size: 1.3rem;
-      min-height: 28px;
-      letter-spacing: 3px;
-      word-break: break-all;
-    }
-
-    .decoder-display-text {
-      font-family: var(--font-title);
-      font-size: 1.1rem;
-      color: var(--ink-red);
-      margin-top: 6px;
-      min-height: 24px;
-      border-top: 1px solid rgba(139, 30, 30, 0.2);
-      padding-top: 4px;
+      text-align: center;
     }
 
     .keyboard-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
-      max-height: 250px;
+      max-height: 240px;
       overflow-y: auto;
     }
 
     .key-btn {
-      background: linear-gradient(to bottom, #f9f2e3, #e5d3b0);
-      border: 1px solid var(--leather-border);
+      background: #f5e9ce;
+      border: 1px solid #7a581e;
       border-radius: 4px;
       padding: 8px 2px;
       font-size: 1.1rem;
-      color: var(--ink-dark);
       cursor: pointer;
     }
 
-    .key-btn:active {
-      transform: translateY(2px);
-    }
-
-    .action-btn {
-      grid-column: span 2;
-      background: linear-gradient(to bottom, #9b2828, #681212);
-      color: #f7eed8;
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-    }
-
-    /* MARQUE-PAGES EN BAS */
+    /* =======================================
+       BARRE DE NAVIGATION BAS (IDENTIQUE PHOTO)
+       ======================================= */
     .nav-bookmarks {
       display: flex;
-      background: var(--leather-main);
+      background: #0d0301;
       padding: 6px 6px 0;
       gap: 4px;
-      border-top: 2px solid var(--gold-accent);
+      border-top: 1px solid rgba(205, 162, 82, 0.25);
+      z-index: 20;
     }
 
     .bookmark-btn {
       flex: 1;
-      background: linear-gradient(to bottom, #4a2818, #2d1810);
-      border: 1px solid var(--gold-accent);
+      background: linear-gradient(180deg, #2b0e06 0%, #120401 100%);
+      border: 1px solid rgba(205, 162, 82, 0.4);
       border-bottom: none;
       border-radius: 6px 6px 0 0;
-      padding: 10px 2px;
-      font-family: var(--font-title);
-      font-size: 0.6rem;
-      color: var(--gold-accent);
+      padding: 10px 1px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #c7a052;
       cursor: pointer;
       text-align: center;
+      text-transform: uppercase;
     }
 
+    /* ONGLET ACTIF EN COULEUR CRÈME */
     .bookmark-btn.active {
-      background: linear-gradient(to bottom, #f7eed8, #e8d5b5);
+      background: linear-gradient(180deg, #f8eedb 0%, #e4d0ad 100%);
       color: var(--ink-red);
-      font-weight: bold;
+      font-weight: 800;
+      border-color: #d2a856;
       transform: translateY(-2px);
     }
   </style>
 </head>
 <body>
 
-  <!-- Sons -->
-  <audio id="sound-page" src="page-turn.mp3" preload="auto"></audio>
-  <audio id="sound-pen" src="quill-write.mp3" preload="auto"></audio>
+  <div class="phone-container">
+    <div class="grimoire-frame">
+      <div class="grimoire-inner">
 
-  <div class="grimoire-wrapper">
-    <div class="parchment">
-      
-      <!-- En-tête -->
-      <div class="header">
-        <h1>Codex Obscurum</h1>
-        <div class="header-decoration">✦ — 🗝 — ✦</div>
-      </div>
+        <!-- Coins dorés gravés -->
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
 
-      <!-- Contenu -->
-      <div class="content-area">
-        
-        <!-- ONGLET 0: COUVERTURE DU MAÎTRE SOUFFLEUR -->
-        <div id="tab-cover" class="tab-content active">
-          <div class="cover-box">
-            <div class="cover-subtitle">— CARNET D'ENQUÊTE —</div>
-            <h1 class="cover-title">LE MAÎTRE SOUFFLEUR</h1>
-            
-            <div class="cover-emblem">🩻</div>
+        <!-- ZONE DE CONTENU -->
+        <div class="content-area">
 
-            <div class="illustration-frame" style="margin-bottom: 20px;">
-              <p class="handwritten" style="font-size: 1.1rem; color: var(--ink-dark);">
-                « Les symboles du mur révèlent les secrets cachés. Ne laisse aucun indice t'échapper. »
-              </p>
-            </div>
+          <!-- ONGLET 1 : COUVERTURE (A L'IDENTIQUE) -->
+          <div id="tab-cover" class="tab-content active">
+            <div class="cover-page">
+              
+              <div class="title-plate">
+                <h1>MAÎTRE<br>SOUFFLEUR</h1>
+                <div class="subtitle">Codex des Révélations</div>
+              </div>
 
-            <button class="btn-open" onclick="switchTab('tab-journal')">Consulter le Journal</button>
-          </div>
-        </div>
+              <button class="btn-open-grimoire" onclick="switchTab('tab-journal')">OUVRIR LE GRIMOIRE</button>
 
-        <!-- ONGLET 1: JOURNAL -->
-        <div id="tab-journal" class="tab-content">
-          <div class="journal-entry">
-            <h2>Affaire du Bâtiment Abandonné</h2>
-            <p>Les inscriptions tracées au sang sur le carrelage forment un message codé en runes anciennes.</p>
-          </div>
-          
-          <div class="illustration-frame">
-            <p style="font-family: var(--font-title); font-size: 0.75rem; color: var(--gold-accent);">— GRAVURE RUNITableCell —</p>
-            <p class="handwritten" style="font-size: 1.4rem; margin-top: 4px;">Γ 8 ⋈ Þ Φ Ψ ↿ ᛋ</p>
-          </div>
-
-          <div class="journal-entry">
-            <p class="handwritten">Chaque symbole équivaut à une lettre latine. Utiliser l'onglet "Alphabet" ou le "Décodeur" pour traduire la phrase complète.</p>
-          </div>
-        </div>
-
-        <!-- ONGLET 2: ALPHABET COMPLET (26 LETTRES) -->
-        <div id="tab-symbols" class="tab-content">
-          <p style="text-align: center; font-size: 0.85rem; margin-bottom: 10px; font-style: italic;">Clé de correspondance A–Z :</p>
-          <div class="alphabet-grid" id="alphabet-grid-container"></div>
-        </div>
-
-        <!-- ONGLET 3: DÉCODEUR -->
-        <div id="tab-decoder" class="tab-content">
-          <div class="decoder-box">
-            <div class="decoder-display-symbols" id="input-symbols">--</div>
-            <div class="decoder-display-text" id="output-text">--</div>
-          </div>
-
-          <div class="keyboard-grid" id="keyboard-container"></div>
-        </div>
-
-        <!-- ONGLET 4: INSTALLATION PWA -->
-        <div id="tab-install" class="tab-content">
-          <div class="journal-entry" style="text-align: center;">
-            <h2>Accès Hors-Ligne</h2>
-            <p style="font-size: 0.9rem; margin-top: 8px;">
-              Installe ce carnet sur ton téléphone pour l'utiliser pendant le jeu sans connexion.
-            </p>
-          </div>
-
-          <div id="android-install-section" style="display: none; margin-top: 15px; text-align: center;">
-            <button id="install-pwa-btn" class="btn-open">📲 Installer l'application</button>
-          </div>
-
-          <div id="ios-install-section" style="margin-top: 15px;">
-            <button class="btn-open" style="background: linear-gradient(to bottom, #4a2818, #2d1810);" onclick="toggleIosGuide()">
-              🍎 Guide d'installation iPhone / iPad
-            </button>
-            <div id="ios-install-banner" class="illustration-frame" style="display: none; margin-top: 10px; text-align: left;">
-              <ol style="font-size: 0.85rem; margin-left: 15px; line-height: 1.4;">
-                <li>Touche le bouton <strong>Partager</strong> ⎋ dans Safari.</li>
-                <li>Sélectionne <strong>Sur l'écran d'accueil</strong> ⊞.</li>
-                <li>Appuie sur <strong>Ajouter</strong>.</li>
-              </ol>
             </div>
           </div>
+
+          <!-- ONGLET 2 : JOURNAL -->
+          <div id="tab-journal" class="tab-content">
+            <div class="internal-page">
+              <h2>Journal d'Enquête</h2>
+              <p style="line-height: 1.4; margin-bottom: 12px;">Chaque symbole gravé sur les carreaux muraux représente une lettre de l'alphabet secret.</p>
+              <div style="border: 1px dashed #7a581e; padding: 12px; text-align: center; font-style: italic; background: rgba(0,0,0,0.03);">
+                « THE DEVIL OFFERS »
+              </div>
+            </div>
+          </div>
+
+          <!-- ONGLET 3 : ALPHABET (26 LETTRES COMPLÈTES) -->
+          <div id="tab-symbols" class="tab-content">
+            <div class="internal-page">
+              <h2>Alphabet de Substitution</h2>
+              <div class="alphabet-grid" id="alphabet-grid-container"></div>
+            </div>
+          </div>
+
+          <!-- ONGLET 4 : DÉCODEUR -->
+          <div id="tab-decoder" class="tab-content">
+            <div class="internal-page">
+              <h2>Décodeur Automatique</h2>
+              <div class="decoder-box">
+                <div id="input-symbols" style="font-size: 1.2rem; min-height: 24px;">--</div>
+                <div id="output-text" style="color: var(--ink-red); font-weight: bold; margin-top: 5px;">--</div>
+              </div>
+              <div class="keyboard-grid" id="keyboard-container"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BARRE DE NAVIGATION (COUVERTURE ACTIF AU DÉPART) -->
+        <div class="nav-bookmarks">
+          <button class="bookmark-btn active" onclick="switchTab('tab-cover', this)">COUVERTURE</button>
+          <button class="bookmark-btn" onclick="switchTab('tab-journal', this)">JOURNAL</button>
+          <button class="bookmark-btn" onclick="switchTab('tab-symbols', this)">ALPHABET</button>
+          <button class="bookmark-btn" onclick="switchTab('tab-decoder', this)">DÉCODEUR</button>
         </div>
 
       </div>
-
-      <!-- Marque-pages bas -->
-      <div class="nav-bookmarks">
-        <button class="bookmark-btn active" onclick="switchTab('tab-cover', this)">Accueil</button>
-        <button class="bookmark-btn" onclick="switchTab('tab-journal', this)">Journal</button>
-        <button class="bookmark-btn" onclick="switchTab('tab-symbols', this)">Alphabet</button>
-        <button class="bookmark-btn" onclick="switchTab('tab-decoder', this)">Décodeur</button>
-        <button class="bookmark-btn" onclick="switchTab('tab-install', this)">Installer</button>
-      </div>
-
     </div>
   </div>
 
   <script>
-    // Alphabet complet 26 lettres
+    // Alphabet de substitution A–Z
     const ALPHABET = [
       { letter: 'A', symbol: 'ᛅ' }, { letter: 'B', symbol: 'ᛒ' },
       { letter: 'C', symbol: '⋞' }, { letter: 'D', symbol: 'Þ' },
@@ -484,14 +398,14 @@
       const keyboardContainer = document.getElementById('keyboard-container');
 
       ALPHABET.forEach(item => {
-        // Grille
+        // Carte d'alphabet
         const card = document.createElement('div');
         card.className = 'symbol-card';
         card.innerHTML = `<span class="glyph">${item.symbol}</span><span class="letter">${item.letter}</span>`;
         card.onclick = () => { addSymbol(item.symbol, item.letter); switchTab('tab-decoder'); };
         gridContainer.appendChild(card);
 
-        // Clavier
+        // Clavier décodeur
         const btn = document.createElement('button');
         btn.className = 'key-btn';
         btn.innerText = item.symbol;
@@ -499,14 +413,18 @@
         keyboardContainer.appendChild(btn);
       });
 
-      // Boutons clavier
+      // Actions clavier
       const spaceBtn = document.createElement('button');
-      spaceBtn.className = 'key-btn action-btn';
+      spaceBtn.className = 'key-btn';
+      spaceBtn.style.gridColumn = 'span 2';
       spaceBtn.innerText = 'Espace';
       spaceBtn.onclick = () => addSymbol(' ', ' ');
 
       const clearBtn = document.createElement('button');
-      clearBtn.className = 'key-btn action-btn';
+      clearBtn.className = 'key-btn';
+      clearBtn.style.gridColumn = 'span 2';
+      clearBtn.style.background = '#7c1a12';
+      clearBtn.style.color = '#fff';
       clearBtn.innerText = 'Effacer';
       clearBtn.onclick = () => clearDecoder();
 
@@ -514,16 +432,8 @@
       keyboardContainer.appendChild(clearBtn);
     }
 
-    // Sons et navigation
-    const soundPage = document.getElementById('sound-page');
-    const soundPen = document.getElementById('sound-pen');
-
-    function playSound(audio) {
-      if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
-    }
-
+    // Gestion des onglets
     function switchTab(tabId, btn) {
-      playSound(soundPage);
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.bookmark-btn').forEach(b => b.classList.remove('active'));
 
@@ -541,7 +451,6 @@
     let currentTranslation = [];
 
     function addSymbol(symbol, letter) {
-      playSound(soundPen);
       currentSymbols.push(symbol);
       currentTranslation.push(letter);
       document.getElementById('input-symbols').innerText = currentSymbols.join(' ');
@@ -549,33 +458,14 @@
     }
 
     function clearDecoder() {
-      playSound(soundPage);
       currentSymbols = [];
       currentTranslation = [];
       document.getElementById('input-symbols').innerText = '--';
       document.getElementById('output-text').innerText = '--';
     }
 
-    function toggleIosGuide() {
-      playSound(soundPage);
-      const banner = document.getElementById('ios-install-banner');
-      banner.style.display = banner.style.display === 'none' ? 'block' : 'none';
-    }
-
-    // Paramètres URL / QR Code
     window.addEventListener('DOMContentLoaded', () => {
       initApp();
-
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      }
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const targetPage = urlParams.get('page');
-      if (targetPage) {
-        const tabMap = { 'journal': 'tab-journal', 'symbols': 'tab-symbols', 'decoder': 'tab-decoder', 'install': 'tab-install' };
-        if (tabMap[targetPage]) switchTab(tabMap[targetPage]);
-      }
     });
   </script>
 </body>
