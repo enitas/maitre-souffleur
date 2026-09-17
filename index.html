@@ -93,7 +93,7 @@
       overflow: hidden;
     }
 
-    /* COINS MÉTALLIQUES DORÉS EN L */
+    /* COINS MÉTALLIQUES DORÉS */
     .corner {
       position: absolute;
       width: 36px;
@@ -365,8 +365,8 @@
               </div>
 
               <div style="margin-top: 15px; border: 1px dashed #7a581e; padding: 15px; background: rgba(0,0,0,0.03);">
-                <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 8px;">SUR ANDROID (CHROME) :</p>
-                <p style="font-size: 0.75rem;">Appuyez sur les <strong>3 points ⋮</strong> en haut à droite puis <strong>Installer l'application</strong>.</p>
+                <p style="font-size: 0.8rem; font-weight: bold; margin-bottom: 8px;">SUR ANDROID / OPERA / CHROME :</p>
+                <p style="font-size: 0.75rem;">Ouvrez le menu <strong>⋮</strong> puis sélectionnez <strong>Installer et créer un raccourci...</strong> (ou <em>Installer l'application</em>).</p>
               </div>
             </div>
           </div>
@@ -387,6 +387,47 @@
   </div>
 
   <script>
+    // --- GESTION ET PRECHARGEMENT AUDIO ---
+    const audioPageTurn = new Audio('page-turn.mp3');
+    const audioQuillWrite = new Audio('quill-write.mp3');
+    let audioUnlocked = false;
+
+    function unlockAudio() {
+      if (!audioUnlocked) {
+        audioPageTurn.play().then(() => {
+          audioPageTurn.pause();
+          audioPageTurn.currentTime = 0;
+        }).catch(() => {});
+
+        audioQuillWrite.play().then(() => {
+          audioQuillWrite.pause();
+          audioQuillWrite.currentTime = 0;
+        }).catch(() => {});
+
+        audioUnlocked = true;
+        document.removeEventListener('click', unlockAudio);
+        document.removeEventListener('touchstart', unlockAudio);
+      }
+    }
+
+    document.addEventListener('click', unlockAudio);
+    document.addEventListener('touchstart', unlockAudio);
+
+    function playSound(type) {
+      try {
+        if (type === 'turn') {
+          audioPageTurn.currentTime = 0;
+          audioPageTurn.play().catch(() => {});
+        } else if (type === 'write') {
+          audioQuillWrite.currentTime = 0;
+          audioQuillWrite.play().catch(() => {});
+        }
+      } catch (e) {
+        console.log('Erreur Audio:', e);
+      }
+    }
+
+    // --- ALPHABET DE SUBSTITUTION ---
     const ALPHABET = [
       { letter: 'A', symbol: 'ᛅ' }, { letter: 'B', symbol: 'ᛒ' },
       { letter: 'C', symbol: '⋞' }, { letter: 'D', symbol: 'Þ' },
@@ -411,13 +452,20 @@
         const card = document.createElement('div');
         card.className = 'symbol-card';
         card.innerHTML = `<span class="glyph">${item.symbol}</span><span class="letter">${item.letter}</span>`;
-        card.onclick = () => { addSymbol(item.symbol, item.letter); switchTab('tab-decoder'); };
+        card.onclick = () => { 
+          playSound('write');
+          addSymbol(item.symbol, item.letter); 
+          switchTab('tab-decoder'); 
+        };
         gridContainer.appendChild(card);
 
         const btn = document.createElement('button');
         btn.className = 'key-btn';
         btn.innerText = item.symbol;
-        btn.onclick = () => addSymbol(item.symbol, item.letter);
+        btn.onclick = () => {
+          playSound('write');
+          addSymbol(item.symbol, item.letter);
+        };
         keyboardContainer.appendChild(btn);
       });
 
@@ -425,7 +473,10 @@
       spaceBtn.className = 'key-btn';
       spaceBtn.style.gridColumn = 'span 2';
       spaceBtn.innerText = 'Espace';
-      spaceBtn.onclick = () => addSymbol(' ', ' ');
+      spaceBtn.onclick = () => {
+        playSound('write');
+        addSymbol(' ', ' ');
+      };
 
       const clearBtn = document.createElement('button');
       clearBtn.className = 'key-btn';
@@ -433,13 +484,18 @@
       clearBtn.style.background = '#7c1a12';
       clearBtn.style.color = '#fff';
       clearBtn.innerText = 'Effacer';
-      clearBtn.onclick = () => clearDecoder();
+      clearBtn.onclick = () => {
+        playSound('write');
+        clearDecoder();
+      };
 
       keyboardContainer.appendChild(spaceBtn);
       keyboardContainer.appendChild(clearBtn);
     }
 
     function switchTab(tabId, btn) {
+      playSound('turn');
+      
       document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
       document.querySelectorAll('.bookmark-btn').forEach(b => b.classList.remove('active'));
 
