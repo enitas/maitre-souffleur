@@ -2,633 +2,371 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Grimoire - Maître Souffleur</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codex du Maître Souffleur</title>
   
   <!-- Configuration PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2b140b">
+  <meta name="theme-color" content="#2d1810">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="icon-192.png">
 
-  <!-- Polices Google -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=IM+Fell+English:ital@0;1&family=Indie+Flower&display=swap" rel="stylesheet">
-
+  <!-- Style CSS -->
   <style>
     :root {
-      --leather-dark: #120906;
-      --leather-main: #2b140b;
-      --leather-border: #4a2313;
+      --bg-dark: #120b08;
+      --paper-bg: #f4e8c1;
+      --paper-border: #8b5a2b;
+      --ink-dark: #2b1810;
       --gold-accent: #c5a059;
-      --gold-bright: #f3e0aa;
-      --gold-dark: #785a22;
-      --parchment-top: #f7eed8;
-      --parchment-base: #e8d5b5;
-      --parchment-shadow: #c2aa7c;
-      --ink-dark: #1c120c;
-      --ink-red: #8b1e1e;
-      
-      --font-title: 'Cinzel Decorative', serif;
-      --font-body: 'IM Fell English', serif;
-      --font-hand: 'Indie Flower', cursive;
+      --red-seal: #8b1e1e;
+      --font-title: 'Georgia', serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background-color: var(--leather-dark);
-      background-image: radial-gradient(circle at center, #2a1810 0%, #050302 100%);
+      background-color: var(--bg-dark);
       color: var(--ink-dark);
-      font-family: var(--font-body);
+      font-family: 'Times New Roman', serif;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 15px;
-    }
-
-    /* ETUI EN CUIR SURPIQUÉ */
-    .grimoire-wrapper {
-      background: var(--leather-main);
-      border: 4px solid var(--leather-border);
-      border-radius: 18px;
-      padding: 12px;
-      box-shadow: 
-        0 25px 60px rgba(0,0,0,0.95),
-        inset 0 0 20px rgba(0,0,0,0.9),
-        0 0 0 2px var(--gold-accent);
-      width: 100%;
-      max-width: 440px;
-      height: 750px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      perspective: 1000px;
-    }
-
-    /* Couture sur le cuir */
-    .grimoire-wrapper::before {
-      content: '';
-      position: absolute;
-      top: 6px; bottom: 6px; left: 6px; right: 6px;
-      border: 1px dashed var(--gold-accent);
-      border-radius: 14px;
-      opacity: 0.4;
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    /* FEUILLE DE PARCHEMIN (CONTENU INTERNE) */
-    .parchment {
-      background: linear-gradient(135deg, #f7eed8 0%, #e8d5b5 50%, #d8c29d 100%);
-      border-radius: 8px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 
-        inset 0 0 40px var(--parchment-shadow),
-        inset 0 0 80px rgba(74, 40, 24, 0.3),
-        0 5px 15px rgba(0,0,0,0.5);
-    }
-
-    /* PAGE DE COUVERTURE RIGIDE (CUIR & DORURES) */
-    .tab-content-cover {
-      height: 100%;
-      background: radial-gradient(circle at center, #3d1c10 0%, #1a0b06 100%);
-      border-radius: 6px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 30px 20px;
-      text-align: center;
-      position: relative;
-      box-shadow: inset 0 0 30px rgba(0,0,0,0.9);
-      cursor: pointer;
-    }
-
-    /* Coins dorés gravés sur la couverture */
-    .cover-corner {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      border: 2px solid var(--gold-accent);
-      opacity: 0.8;
-    }
-    .corner-tl { top: 15px; left: 15px; border-right: none; border-bottom: none; }
-    .corner-tr { top: 15px; right: 15px; border-left: none; border-bottom: none; }
-    .corner-bl { bottom: 15px; left: 15px; border-right: none; border-top: none; }
-    .corner-br { bottom: 15px; right: 15px; border-left: none; border-top: none; }
-
-    /* PLAQUE GRAVÉE EN DORURE EN RENFONCEMENT (EMBOSSAGE) */
-    .embossed-plate {
-      border: 2px solid var(--gold-dark);
-      background: radial-gradient(circle at center, #231109 0%, #120704 100%);
-      padding: 35px 20px;
-      border-radius: 12px;
-      box-shadow: 
-        inset 3px 3px 8px rgba(0,0,0,0.9),
-        inset -2px -2px 6px rgba(197, 160, 89, 0.2),
-        0 0 15px rgba(0,0,0,0.8);
-      width: 90%;
-      position: relative;
-    }
-
-    .embossed-title {
-      font-family: var(--font-title);
-      font-size: 1.55rem;
-      font-weight: 900;
-      letter-spacing: 3px;
-      line-height: 1.3;
-      text-transform: uppercase;
-      color: var(--gold-dark);
-      background: linear-gradient(180deg, #d4af37 0%, #8a6d29 50%, #f3e0aa 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0px -1px 1px rgba(0, 0, 0, 0.9))
-              drop-shadow(0px 2px 1px rgba(255, 255, 255, 0.2));
-    }
-
-    .cover-subtitle {
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      color: var(--gold-accent);
-      margin-top: 15px;
-      letter-spacing: 1px;
-      opacity: 0.8;
-      font-style: italic;
-    }
-
-    .open-grimoire-btn {
-      margin-top: 40px;
-      background: linear-gradient(to bottom, #c5a059, #785a22);
-      border: 1px solid var(--gold-bright);
-      color: #1a0f0a;
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-      padding: 12px 24px;
-      border-radius: 20px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.6);
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .open-grimoire-btn:active {
-      transform: scale(0.95);
-    }
-
-    /* EN-TÊTE DU PARCHEMIN INTERNE */
-    .header {
-      padding: 18px 15px 8px;
-      text-align: center;
-      border-bottom: 2px solid var(--gold-accent);
-      background: linear-gradient(to bottom, rgba(197, 160, 89, 0.15), transparent);
-    }
-
-    .header h1 {
-      font-family: var(--font-title);
-      font-size: 1.1rem;
-      color: var(--ink-red);
-      text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
-      letter-spacing: 2px;
-    }
-
-    .header-decoration {
-      font-size: 0.8rem;
-      color: var(--gold-accent);
-      margin-top: 2px;
-    }
-
-    /* ZONE DE CONTENU */
-    .content-area {
-      flex: 1;
-      padding: 16px;
-      overflow-y: auto;
-      position: relative;
-    }
-
-    .tab-content {
-      display: none;
-      animation: fadeIn 0.4s ease-in-out;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* JOURNAL */
-    .journal-entry {
-      margin-bottom: 20px;
-      font-size: 1.05rem;
-      line-height: 1.4;
-    }
-
-    .journal-entry h2 {
-      font-family: var(--font-title);
-      font-size: 0.85rem;
-      color: var(--ink-dark);
-      border-bottom: 1px solid var(--ink-dark);
-      padding-bottom: 3px;
-      margin-bottom: 8px;
-    }
-
-    .handwritten {
-      font-family: var(--font-hand);
-      font-size: 1.25rem;
-      color: var(--ink-red);
-    }
-
-    .illustration-frame {
-      border: 2px solid var(--gold-accent);
       padding: 10px;
-      background: rgba(0, 0, 0, 0.04);
-      border-radius: 4px;
-      text-align: center;
-      margin: 15px 0;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
     }
 
-    /* ALPHABET */
-    .alphabet-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+    .grimoire-container {
+      width: 100%;
+      max-width: 500px;
+      background: var(--paper-bg);
+      border: 8px solid var(--paper-border);
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-height: 600px;
+      overflow: hidden;
     }
 
-    .symbol-card {
-      background: rgba(255, 255, 255, 0.4);
-      border: 1px solid var(--gold-accent);
-      border-radius: 6px;
-      padding: 6px 4px;
-      text-align: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
+    .tab-content { display: none; padding: 20px; flex-grow: 1; }
+    .tab-content.active { display: block; }
 
-    .symbol-card .glyph {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: var(--ink-dark);
-      display: block;
-      height: 28px;
-      line-height: 28px;
-    }
+    /* Titres & Rendu ancien */
+    h1, h2, h3 { font-family: var(--font-title); color: var(--red-seal); text-align: center; margin-bottom: 12px; }
+    p { line-height: 1.5; margin-bottom: 10px; text-align: justify; }
 
-    .symbol-card .letter {
-      font-family: var(--font-title);
-      font-size: 0.85rem;
-      color: var(--ink-red);
-      border-top: 1px dotted var(--gold-accent);
-      padding-top: 2px;
-      margin-top: 2px;
-      display: block;
-    }
-
-    /* DÉCODEUR */
-    .decoder-box {
-      background: rgba(0, 0, 0, 0.06);
-      border: 2px solid var(--gold-accent);
-      border-radius: 6px;
-      padding: 12px;
-      min-height: 70px;
-      margin-bottom: 15px;
-      box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
-    }
-
-    .decoder-display-symbols {
-      font-size: 1.3rem;
-      min-height: 28px;
-      letter-spacing: 3px;
-      word-break: break-all;
-    }
-
-    .decoder-display-text {
-      font-family: var(--font-title);
-      font-size: 1.1rem;
-      color: var(--ink-red);
-      margin-top: 6px;
-      min-height: 24px;
-      border-top: 1px solid rgba(139, 30, 30, 0.2);
-      padding-top: 4px;
-    }
-
-    .keyboard-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      max-height: 270px;
-      overflow-y: auto;
-      padding-right: 2px;
-    }
-
-    .key-btn {
-      background: linear-gradient(to bottom, #f9f2e3, #e5d3b0);
-      border: 1px solid var(--leather-border);
-      border-radius: 4px;
-      padding: 8px 2px;
-      font-size: 1.1rem;
-      color: var(--ink-dark);
-      cursor: pointer;
-      box-shadow: 0 2px 0 var(--leather-border);
-    }
-
-    .key-btn:active {
-      transform: translateY(2px);
-      box-shadow: none;
-    }
-
-    .action-btn {
-      grid-column: span 2;
-      background: linear-gradient(to bottom, #9b2828, #681212);
-      color: #f7eed8;
-      font-family: var(--font-title);
-      font-size: 0.75rem;
-      border: 1px solid #4a0d0d;
-      box-shadow: 0 2px 0 #300808;
-    }
-
-    /* MARQUE-PAGES EN BAS */
+    /* Navigation par marque-pages */
     .nav-bookmarks {
       display: flex;
-      background: var(--leather-main);
-      padding: 6px 6px 0;
-      gap: 3px;
+      background: #2d1810;
       border-top: 2px solid var(--gold-accent);
-      z-index: 15;
+      overflow-x: auto;
     }
 
     .bookmark-btn {
       flex: 1;
-      background: linear-gradient(to bottom, #4a2818, #2d1810);
-      border: 1px solid var(--gold-accent);
-      border-bottom: none;
-      border-radius: 6px 6px 0 0;
-      padding: 10px 1px;
+      padding: 12px 6px;
+      background: none;
+      border: none;
+      color: #a89078;
       font-family: var(--font-title);
-      font-size: 0.6rem;
-      color: var(--gold-accent);
+      font-size: 0.75rem;
       cursor: pointer;
-      transition: all 0.2s;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .bookmark-btn.active {
-      background: linear-gradient(to bottom, #f7eed8, #e8d5b5);
-      color: var(--ink-red);
+      color: var(--gold-accent);
+      background: rgba(197, 160, 89, 0.15);
+      border-bottom: 3px solid var(--gold-accent);
+    }
+
+    /* Grille de symboles & Décodeur */
+    .symbols-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .symbol-card {
+      background: rgba(0,0,0,0.05);
+      border: 1px solid var(--paper-border);
+      padding: 10px;
+      text-align: center;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .symbol-card span.sym { font-size: 1.5rem; display: block; font-weight: bold; }
+    .symbol-card span.let { font-size: 0.8rem; color: var(--red-seal); font-weight: bold; }
+
+    .decoder-display {
+      background: #1e120c;
+      color: var(--gold-accent);
+      padding: 15px;
+      border-radius: 6px;
+      min-height: 60px;
+      font-family: monospace;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      text-align: center;
+      word-break: break-all;
+    }
+
+    .open-grimoire-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: var(--gold-accent);
+      color: var(--bg-dark);
+      border: 1px solid var(--paper-border);
+      font-family: var(--font-title);
       font-weight: bold;
-      transform: translateY(-2px);
-      box-shadow: 0 -3px 8px rgba(0,0,0,0.5);
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    .illustration-frame {
+      border: 1px dashed var(--paper-border);
+      padding: 10px;
+      background: rgba(0,0,0,0.02);
+      border-radius: 4px;
     }
   </style>
 </head>
 <body>
 
-  <!-- Audio -->
-  <audio id="sound-page" src="page-turn.mp3" preload="auto"></audio>
-  <audio id="sound-pen" src="quill-write.mp3" preload="auto"></audio>
+<div class="grimoire-container">
 
-  <div class="grimoire-wrapper">
-    <div class="parchment">
-
-      <div class="content-area" style="padding: 0; display: flex; flex-direction: column; height: 100%;">
-        
-        <!-- ONGLET 0: COUVERTURE -->
-        <div id="tab-cover" class="tab-content active" style="height: 100%;">
-          <div class="tab-content-cover" onclick="switchTab('tab-journal')">
-            <div class="cover-corner corner-tl"></div>
-            <div class="cover-corner corner-tr"></div>
-            <div class="cover-corner corner-bl"></div>
-            <div class="cover-corner corner-br"></div>
-
-            <div class="embossed-plate">
-              <div class="embossed-title">MAÎTRE SOUFFLEUR</div>
-              <div class="cover-subtitle">Codex des Révélations</div>
-            </div>
-
-            <button class="open-grimoire-btn">Ouvrir le Grimoire</button>
-          </div>
-        </div>
-
-        <!-- EN-TÊTE INTERNE -->
-        <div id="internal-header" class="header" style="display: none;">
-          <h1>Maître Souffleur</h1>
-          <div class="header-decoration">✦ — 🗝 — ✦</div>
-        </div>
-
-        <!-- CONTENEUR DES PAGES INTERNES -->
-        <div id="internal-pages" style="padding: 16px; flex: 1; overflow-y: auto; display: none;">
-          
-          <!-- ONGLET 1: JOURNAL -->
-          <div id="tab-journal" class="tab-content">
-            <div class="journal-entry">
-              <h2>Expédition du Sanctuaire</h2>
-              <p>Les symboles gravés sur la pierre ne correspondent à aucun dialecte connu. Il s'agit d'un chiffrement délibéré.</p>
-            </div>
-            
-            <div class="illustration-frame">
-              <p style="font-family: var(--font-title); font-size: 0.75rem; color: var(--gold-accent);">— STÈLE DES GARDIENS —</p>
-              <p class="handwritten" style="font-size: 1.5rem; margin-top: 5px;">Δ Þ λλ Ψ</p>
-            </div>
-
-            <div class="journal-entry">
-              <p class="handwritten">Note : Utiliser la clé de décodage complète pour lire les inscriptions sous les quatre statues.</p>
-            </div>
-          </div>
-
-          <!-- ONGLET 2: ALPHABET -->
-          <div id="tab-symbols" class="tab-content">
-            <p style="text-align: center; font-size: 0.85rem; margin-bottom: 12px; font-style: italic;">Table d'équivalence universelle :</p>
-            <div class="alphabet-grid" id="alphabet-grid-container"></div>
-          </div>
-
-          <!-- ONGLET 3: DÉCODEUR -->
-          <div id="tab-decoder" class="tab-content">
-            <div class="decoder-box">
-              <div class="decoder-display-symbols" id="input-symbols">--</div>
-              <div class="decoder-display-text" id="output-text">--</div>
-            </div>
-
-            <div class="keyboard-grid" id="keyboard-container"></div>
-          </div>
-
-        </div>
-
+  <!-- ONGLET 0: COUVERTURE -->
+  <div id="tab-cover" class="tab-content active">
+    <div style="text-align: center; padding-top: 40px;">
+      <h1>CODEX ALCHIMIQUE</h1>
+      <p style="text-align: center; font-style: italic;">« Verba volant, scripta manent »</p>
+      <div style="margin: 40px 0;">
+        <span style="font-size: 4rem; color: var(--red-seal);">🩻</span>
       </div>
-
-      <!-- Navigation par marque-pages -->
-      <div class="nav-bookmarks">
-        <button class="bookmark-btn active" onclick="switchTab('tab-cover', this)">Couverture</button>
-        <button class="bookmark-btn" onclick="switchTab('tab-journal', this)">Journal</button>
-        <button class="bookmark-btn" onclick="switchTab('tab-symbols', this)">Alphabet</button>
-        <button class="bookmark-btn" onclick="switchTab('tab-decoder', this)">Décodeur</button>
-      </div>
-
+      <button class="open-grimoire-btn" onclick="switchTab('tab-journal')">Ouvrir le Grimoire</button>
     </div>
   </div>
 
-  <script>
-    // ALPHABET COMPLET (26 LETTRES)
-    const ALPHABET_COMPLET = [
-      { letter: 'A', symbol: 'Δ' },
-      { letter: 'B', symbol: '├┤' },
-      { letter: 'C', symbol: '⊏⊐' },
-      { letter: 'D', symbol: 'Þ' },
-      { letter: 'E', symbol: 'λλ' },
-      { letter: 'F', symbol: 'Ψ' },
-      { letter: 'G', symbol: '⨂' },
-      { letter: 'H', symbol: '⫴' },
-      { letter: 'I', symbol: '↿' },
-      { letter: 'J', symbol: '⍳' },
-      { letter: 'K', symbol: 'prec;' },
-      { letter: 'L', symbol: '∟' },
-      { letter: 'M', symbol: '⨀⨀' },
-      { letter: 'N', symbol: '∦' },
-      { letter: 'O', symbol: 'Φ' },
-      { letter: 'P', symbol: '⊓' },
-      { letter: 'Q', symbol: '⊕' },
-      { letter: 'R', symbol: '∯' },
-      { letter: 'S', symbol: '∿∿' },
-      { letter: 'T', symbol: '┬' },
-      { letter: 'U', symbol: '⊔' },
-      { letter: 'V', symbol: '∨' },
-      { letter: 'W', symbol: '≈' },
-      { letter: 'X', symbol: '⌧' },
-      { letter: 'Y', symbol: '⋔' },
-      { letter: 'Z', symbol: '⧖' }
-    ];
+  <!-- ONGLET 1: JOURNAL -->
+  <div id="tab-journal" class="tab-content">
+    <h2>Journal d'Investigation</h2>
+    <div class="journal-entry">
+      <p><strong>14 Novembre —</strong> Nous avons découvert les gravures sur le carrelage. Les symboles semblent appartenir à un alphabet d'initiés mêlant d'anciennes runes scandinaves et des signes alchimiques.</p>
+      <p>L'accès à la chambre des fidèles est protégé par une séquence numérique à quatre chiffres basée sur la représentation des gardiens.</p>
+    </div>
+  </div>
 
-    function initApp() {
-      const gridContainer = document.getElementById('alphabet-grid-container');
-      const keyboardContainer = document.getElementById('keyboard-container');
+  <!-- ONGLET 2: ALPHABET -->
+  <div id="tab-symbols" class="tab-content">
+    <h2>Alphabet Runic</h2>
+    <p style="font-size: 0.85rem; text-align: center;">Cliquez sur une rune pour l'ajouter au décodeur.</p>
+    <div class="symbols-grid">
+      <div class="symbol-card" onclick="addSymbol('Γ', 'T')"><span class="sym">Γ</span><span class="let">T</span></div>
+      <div class="symbol-card" onclick="addSymbol('8', 'H')"><span class="sym">8</span><span class="let">H</span></div>
+      <div class="symbol-card" onclick="addSymbol('⋈', 'E')"><span class="sym">⋈</span><span class="let">E</span></div>
+      <div class="symbol-card" onclick="addSymbol('Þ', 'D')"><span class="sym">Þ</span><span class="let">D</span></div>
+      <div class="symbol-card" onclick="addSymbol('Φ', 'O')"><span class="sym">Φ</span><span class="let">O</span></div>
+      <div class="symbol-card" onclick="addSymbol('Ψ', 'V')"><span class="sym">Ψ</span><span class="let">V</span></div>
+      <div class="symbol-card" onclick="addSymbol('↿', 'L')"><span class="sym">↿</span><span class="let">L</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛋ', 'S')"><span class="sym">ᛋ</span><span class="let">S</span></div>
+    </div>
+  </div>
 
-      ALPHABET_COMPLET.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'symbol-card';
-        card.innerHTML = `<span class="glyph">${item.symbol}</span><span class="letter">${item.letter}</span>`;
-        gridContainer.appendChild(card);
+  <!-- ONGLET 3: DÉCODEUR -->
+  <div id="tab-decoder" class="tab-content">
+    <h2>Décodeur de Symboles</h2>
+    <div id="input-symbols" class="decoder-display">--</div>
+    <div id="output-text" class="decoder-display" style="color: #6cf;">--</div>
+    <button class="open-grimoire-btn" style="background: var(--red-seal); color: white;" onclick="clearDecoder()">Effacer</button>
+  </div>
 
-        const btn = document.createElement('button');
-        btn.className = 'key-btn';
-        btn.innerText = item.symbol;
-        btn.onclick = () => addSymbol(item.symbol, item.letter);
-        keyboardContainer.appendChild(btn);
-      });
+  <!-- ONGLET 4: INSTALLATION PWA -->
+  <div id="tab-install" class="tab-content">
+    <div class="journal-entry" style="text-align: center;">
+      <h2>Conservation du Codex</h2>
+      <p style="font-size: 0.9rem; margin-top: 6px;">
+        Installe ce grimoire sur ton appareil pour y accéder <strong>100 % hors-ligne</strong> lors de tes sessions de jeu.
+      </p>
+    </div>
 
-      const spaceBtn = document.createElement('button');
-      spaceBtn.className = 'key-btn action-btn';
-      spaceBtn.innerText = 'Espace';
-      spaceBtn.onclick = () => addSymbol(' ', ' ');
-      
-      const clearBtn = document.createElement('button');
-      clearBtn.className = 'key-btn action-btn';
-      clearBtn.innerText = 'Effacer';
-      clearBtn.onclick = () => clearDecoder();
+    <!-- Section Android / Desktop -->
+    <div id="android-install-section" style="display: none; margin-top: 20px; text-align: center;">
+      <button id="install-pwa-btn" class="open-grimoire-btn" style="background: linear-gradient(to bottom, #8b1e1e, #4a0d0d); color: #f7eed8; border-color: var(--gold-accent);">
+        📲 Installer sur Android / PC
+      </button>
+    </div>
 
-      keyboardContainer.appendChild(spaceBtn);
-      keyboardContainer.appendChild(clearBtn);
+    <!-- Section iOS (iPhone) -->
+    <div id="ios-install-section" style="margin-top: 20px;">
+      <button id="ios-guide-toggle-btn" class="open-grimoire-btn" style="background: linear-gradient(to bottom, #4a2818, #2d1810); color: var(--gold-accent); border-color: var(--gold-accent);" onclick="toggleIosGuide()">
+        🍎 Instructions d'installation iOS (iPhone)
+      </button>
+
+      <div id="ios-install-banner" class="illustration-frame" style="display: none; margin-top: 15px; text-align: left; padding: 12px;">
+        <p style="font-family: var(--font-title); font-size: 0.75rem; color: var(--gold-accent); text-align: center; margin-bottom: 8px;">
+          — DÉMARCHE SUR SAFARI —
+        </p>
+        <ol style="font-size: 0.85rem; margin-left: 18px; line-height: 1.5; color: var(--ink-dark);">
+          <li>Appuie sur le bouton <strong>Partager</strong> <span style="font-size: 1.1rem;">⎋</span> (barre du bas de Safari).</li>
+          <li>Fais défiler les options vers le bas.</li>
+          <li>Touche <strong>Sur l'écran d'accueil</strong> <span style="font-size: 1.1rem;">⊞</span>.</li>
+          <li>Valide en appuyant sur <strong>Ajouter</strong> en haut à droite.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Message de confirmation -->
+    <div id="already-installed-msg" class="illustration-frame" style="display: none; margin-top: 20px; text-align: center;">
+      <p style="font-family: var(--font-title); font-size: 0.85rem; color: var(--gold-accent);">
+        ✓ CODEX SCELLÉ
+      </p>
+      <p style="font-size: 0.85rem; margin-top: 4px;">
+        L'application est déjà installée sur cet appareil et fonctionnelle hors-ligne.
+      </p>
+    </div>
+  </div>
+
+  <!-- Barre de navigation bas -->
+  <div class="nav-bookmarks">
+    <button class="bookmark-btn active" onclick="switchTab('tab-cover', this)">Couverture</button>
+    <button class="bookmark-btn" onclick="switchTab('tab-journal', this)">Journal</button>
+    <button class="bookmark-btn" onclick="switchTab('tab-symbols', this)">Alphabet</button>
+    <button class="bookmark-btn" onclick="switchTab('tab-decoder', this)">Décodeur</button>
+    <button class="bookmark-btn" onclick="switchTab('tab-install', this)">Installer</button>
+  </div>
+
+</div>
+
+<!-- SCRIPT JAVASCRIPT -->
+<script>
+  // Effets sonores
+  const pageSound = new Audio('page-turn.mp3');
+  const writeSound = new Audio('quill-write.mp3');
+
+  function playSound(audio) {
+    audio.currentTime = 0;
+    audio.play().catch(() => {}); // Évite de bloquer si l'utilisateur n'a pas encore interagi
+  }
+
+  // Navigation par onglet + QR Code ?page=...
+  function switchTab(tabId, btn) {
+    playSound(pageSound);
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.bookmark-btn').forEach(b => b.classList.remove('active'));
+    
+    const targetTab = document.getElementById(tabId);
+    if (targetTab) targetTab.classList.add('active');
+
+    if (btn) {
+      btn.classList.add('active');
+    } else {
+      const defaultBtn = document.querySelector(`.bookmark-btn[onclick*="${tabId}"]`);
+      if (defaultBtn) defaultBtn.classList.add('active');
     }
+  }
 
-    function playSound(id) {
-      const sound = document.getElementById(id);
-      if(sound) {
-        sound.currentTime = 0;
-        sound.volume = 0.4;
-        sound.play().catch(() => {});
-      }
-    }
+  // Logique du décodeur
+  let currentSymbols = [];
+  let currentTranslation = [];
 
-    function switchTab(tabId, btn) {
-      playSound('sound-page');
-
-      const internalHeader = document.getElementById('internal-header');
-      const internalPages = document.getElementById('internal-pages');
-      const coverTab = document.getElementById('tab-cover');
-
-      if (tabId === 'tab-cover') {
-        internalHeader.style.display = 'none';
-        internalPages.style.display = 'none';
-        coverTab.style.display = 'block';
-      } else {
-        coverTab.style.display = 'none';
-        internalHeader.style.display = 'block';
-        internalPages.style.display = 'block';
-      }
-
-      document.querySelectorAll('.tab-content').forEach(tab => {
-        if(tab.id !== 'tab-cover') tab.classList.remove('active');
-      });
-      document.querySelectorAll('.bookmark-btn').forEach(b => b.classList.remove('active'));
-      
-      const targetTab = document.getElementById(tabId);
-      if(targetTab) targetTab.classList.add('active');
-
-      if(btn) {
-        btn.classList.add('active');
-      } else {
-        const defaultBtn = document.querySelector(`.bookmark-btn[onclick*="${tabId}"]`);
-        if(defaultBtn) defaultBtn.classList.add('active');
-      }
-    }
-
-    let currentSymbols = [];
-    let currentTranslation = [];
-
-    function addSymbol(symbol, letter) {
-      playSound('sound-pen');
-      currentSymbols.push(symbol);
-      currentTranslation.push(letter);
-
-      document.getElementById('input-symbols').innerText = currentSymbols.join(' ');
-      document.getElementById('output-text').innerText = currentTranslation.join('');
-    }
-
-    function clearDecoder() {
+  function addSymbol(symbol, letter) {
+    playSound(writeSound);
+    if (currentSymbols.length === 0) {
       currentSymbols = [];
       currentTranslation = [];
-      document.getElementById('input-symbols').innerText = '--';
-      document.getElementById('output-text').innerText = '--';
     }
+    currentSymbols.push(symbol);
+    currentTranslation.push(letter);
 
-    window.addEventListener('DOMContentLoaded', () => {
-      initApp();
+    document.getElementById('input-symbols').innerText = currentSymbols.join(' ');
+    document.getElementById('output-text').innerText = currentTranslation.join('');
+  }
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const targetPage = urlParams.get('page');
+  function clearDecoder() {
+    playSound(pageSound);
+    currentSymbols = [];
+    currentTranslation = [];
+    document.getElementById('input-symbols').innerText = '--';
+    document.getElementById('output-text').innerText = '--';
+  }
 
-      if (targetPage) {
-        const tabMap = {
-          'cover': 'tab-cover',
-          'journal': 'tab-journal',
-          'symbols': 'tab-symbols',
-          'decoder': 'tab-decoder'
-        };
-        if(tabMap[targetPage]) {
-          switchTab(tabMap[targetPage]);
-        }
+  // Gestion PWA & Installation
+  let deferredPrompt;
+
+  function initInstallTab() {
+    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+
+    const androidSection = document.getElementById('android-install-section');
+    const iosSection = document.getElementById('ios-install-section');
+    const installedMsg = document.getElementById('already-installed-msg');
+
+    if (isStandalone) {
+      if (androidSection) androidSection.style.display = 'none';
+      if (iosSection) iosSection.style.display = 'none';
+      if (installedMsg) installedMsg.style.display = 'block';
+    } else if (isIos) {
+      if (iosSection) iosSection.style.display = 'block';
+    }
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const androidSection = document.getElementById('android-install-section');
+    if (androidSection) androidSection.style.display = 'block';
+  });
+
+  document.addEventListener('click', async (e) => {
+    if (e.target && e.target.id === 'install-pwa-btn') {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        document.getElementById('android-install-section').style.display = 'none';
+        document.getElementById('already-installed-msg').style.display = 'block';
       }
-    });
-
-    // ENREGISTREMENT SERVICE WORKER (PWA)
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('Service Worker actif', reg))
-          .catch(err => console.error('Erreur SW', err));
-      });
+      deferredPrompt = null;
     }
-  </script>
+  });
+
+  function toggleIosGuide() {
+    playSound(pageSound);
+    const banner = document.getElementById('ios-install-banner');
+    if (banner) {
+      banner.style.display = (banner.style.display === 'none' || banner.style.display === '') ? 'block' : 'none';
+    }
+  }
+
+  // Initialisation et lecture des QR codes au chargement
+  window.addEventListener('DOMContentLoaded', () => {
+    initInstallTab();
+
+    // Enregistrement du Service Worker PWA
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
+    }
+
+    // Gestion du lien QR code (?page=...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetPage = urlParams.get('page');
+
+    if (targetPage) {
+      if (targetPage === 'journal') switchTab('tab-journal');
+      if (targetPage === 'symbols') switchTab('tab-symbols');
+      if (targetPage === 'decoder') switchTab('tab-decoder');
+      if (targetPage === 'install') switchTab('tab-install');
+    }
+  });
+</script>
+
 </body>
 </html>
