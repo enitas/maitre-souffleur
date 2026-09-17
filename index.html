@@ -12,7 +12,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="icon-192.png">
 
-  <!-- Style CSS -->
+  <!-- Styles CSS -->
   <style>
     :root {
       --bg-dark: #120b08;
@@ -47,18 +47,18 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      min-height: 600px;
+      min-height: 650px;
       overflow: hidden;
     }
 
     .tab-content { display: none; padding: 20px; flex-grow: 1; }
     .tab-content.active { display: block; }
 
-    /* Titres & Rendu ancien */
+    /* En-têtes */
     h1, h2, h3 { font-family: var(--font-title); color: var(--red-seal); text-align: center; margin-bottom: 12px; }
     p { line-height: 1.5; margin-bottom: 10px; text-align: justify; }
 
-    /* Navigation par marque-pages */
+    /* Barre de navigation bas (Marque-pages) */
     .nav-bookmarks {
       display: flex;
       background: #2d1810;
@@ -68,12 +68,12 @@
 
     .bookmark-btn {
       flex: 1;
-      padding: 12px 6px;
+      padding: 12px 4px;
       background: none;
       border: none;
       color: #a89078;
       font-family: var(--font-title);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       cursor: pointer;
       text-transform: uppercase;
       white-space: nowrap;
@@ -83,37 +83,44 @@
       color: var(--gold-accent);
       background: rgba(197, 160, 89, 0.15);
       border-bottom: 3px solid var(--gold-accent);
+      font-weight: bold;
     }
 
-    /* Grille de symboles & Décodeur */
+    /* Grille d'alphabet complet */
     .symbols-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+      gap: 8px;
       margin-top: 15px;
+      max-height: 420px;
+      overflow-y: auto;
+      padding-right: 4px;
     }
 
     .symbol-card {
-      background: rgba(0,0,0,0.05);
+      background: rgba(0,0,0,0.04);
       border: 1px solid var(--paper-border);
-      padding: 10px;
+      padding: 8px 4px;
       text-align: center;
       border-radius: 4px;
       cursor: pointer;
+      transition: background 0.2s;
     }
 
-    .symbol-card span.sym { font-size: 1.5rem; display: block; font-weight: bold; }
-    .symbol-card span.let { font-size: 0.8rem; color: var(--red-seal); font-weight: bold; }
+    .symbol-card:hover { background: rgba(197, 160, 89, 0.3); }
+    .symbol-card span.sym { font-size: 1.4rem; display: block; font-weight: bold; }
+    .symbol-card span.let { font-size: 0.75rem; color: var(--red-seal); font-weight: bold; }
 
+    /* Zone Décodeur */
     .decoder-display {
       background: #1e120c;
       color: var(--gold-accent);
-      padding: 15px;
+      padding: 12px;
       border-radius: 6px;
-      min-height: 60px;
+      min-height: 50px;
       font-family: monospace;
       font-size: 1.2rem;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       text-align: center;
       word-break: break-all;
     }
@@ -133,7 +140,7 @@
 
     .illustration-frame {
       border: 1px dashed var(--paper-border);
-      padding: 10px;
+      padding: 12px;
       background: rgba(0,0,0,0.02);
       border-radius: 4px;
     }
@@ -143,49 +150,82 @@
 
 <div class="grimoire-container">
 
-  <!-- ONGLET 0: COUVERTURE -->
+  <!-- ONGLET 0: PAGE D'ACCUEIL / COUVERTURE MAGNIFIQUE -->
   <div id="tab-cover" class="tab-content active">
-    <div style="text-align: center; padding-top: 40px;">
-      <h1>CODEX ALCHIMIQUE</h1>
-      <p style="text-align: center; font-style: italic;">« Verba volant, scripta manent »</p>
-      <div style="margin: 40px 0;">
-        <span style="font-size: 4rem; color: var(--red-seal);">🩻</span>
+    <div style="text-align: center; padding-top: 30px;">
+      <p style="letter-spacing: 2px; font-size: 0.8rem; color: var(--paper-border);">— SANCTUAIRE SECRET —</p>
+      <h1 style="font-size: 2.2rem; margin: 15px 0 5px 0;">CODEX DU MAÎTRE</h1>
+      <p style="text-align: center; font-style: italic; color: var(--red-seal);">« Verba volant, scripta manent »</p>
+      
+      <div style="margin: 30px 0;">
+        <span style="font-size: 5rem; color: var(--red-seal); text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🩻</span>
       </div>
+
+      <div class="illustration-frame" style="margin-bottom: 25px;">
+        <p style="font-size: 0.85rem; text-align: center; margin: 0;">
+          Chronique d'investigation, grille des symboles runiques anciens et traducteur automatique d'énigmes.
+        </p>
+      </div>
+
       <button class="open-grimoire-btn" onclick="switchTab('tab-journal')">Ouvrir le Grimoire</button>
     </div>
   </div>
 
-  <!-- ONGLET 1: JOURNAL -->
+  <!-- ONGLET 1: JOURNAL COMPLET -->
   <div id="tab-journal" class="tab-content">
     <h2>Journal d'Investigation</h2>
-    <div class="journal-entry">
-      <p><strong>14 Novembre —</strong> Nous avons découvert les gravures sur le carrelage. Les symboles semblent appartenir à un alphabet d'initiés mêlant d'anciennes runes scandinaves et des signes alchimiques.</p>
-      <p>L'accès à la chambre des fidèles est protégé par une séquence numérique à quatre chiffres basée sur la représentation des gardiens.</p>
+    <div class="illustration-frame" style="margin-bottom: 15px;">
+      <p><strong>14 Novembre —</strong> Nous avons découvert les gravures tracées sur le carrelage de la pièce abandonnée. Les symboles semblent appartenir à un alphabet d'initiés combinant d'anciennes runes scandinaves et des signes alchimiques.</p>
+      <p><strong>15 Novembre —</strong> L'accès au sanctuaire des fidèles est protégé par un digicode à 4 chiffres. Le message gravé mentionne les <em>« Quatre Gardiens »</em> : l'Aigle, le Serpent, le Loup et le Taureau.</p>
     </div>
   </div>
 
-  <!-- ONGLET 2: ALPHABET -->
+  <!-- ONGLET 2: ALPHABET RUNIQUE COMPLET (26 LETTRES) -->
   <div id="tab-symbols" class="tab-content">
-    <h2>Alphabet Runic</h2>
-    <p style="font-size: 0.85rem; text-align: center;">Cliquez sur une rune pour l'ajouter au décodeur.</p>
+    <h2>Alphabet de Substitution</h2>
+    <p style="font-size: 0.8rem; text-align: center; margin-bottom: 10px;">Cliquez sur un symbole pour le charger dans le décodeur.</p>
+    
     <div class="symbols-grid">
-      <div class="symbol-card" onclick="addSymbol('Γ', 'T')"><span class="sym">Γ</span><span class="let">T</span></div>
-      <div class="symbol-card" onclick="addSymbol('8', 'H')"><span class="sym">8</span><span class="let">H</span></div>
-      <div class="symbol-card" onclick="addSymbol('⋈', 'E')"><span class="sym">⋈</span><span class="let">E</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛅ', 'A')"><span class="sym">ᛅ</span><span class="let">A</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛒ', 'B')"><span class="sym">ᛒ</span><span class="let">B</span></div>
+      <div class="symbol-card" onclick="addSymbol('⋞', 'C')"><span class="sym">⋞</span><span class="let">C</span></div>
       <div class="symbol-card" onclick="addSymbol('Þ', 'D')"><span class="sym">Þ</span><span class="let">D</span></div>
-      <div class="symbol-card" onclick="addSymbol('Φ', 'O')"><span class="sym">Φ</span><span class="let">O</span></div>
-      <div class="symbol-card" onclick="addSymbol('Ψ', 'V')"><span class="sym">Ψ</span><span class="let">V</span></div>
+      <div class="symbol-card" onclick="addSymbol('⋈', 'E')"><span class="sym">⋈</span><span class="let">E</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᚠ', 'F')"><span class="sym">ᚠ</span><span class="let">F</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᚵ', 'G')"><span class="sym">ᚵ</span><span class="let">G</span></div>
+      <div class="symbol-card" onclick="addSymbol('8', 'H')"><span class="sym">8</span><span class="let">H</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛁ', 'I')"><span class="sym">ᛁ</span><span class="let">I</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛃ', 'J')"><span class="sym">ᛃ</span><span class="let">J</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᚴ', 'K')"><span class="sym">ᚴ</span><span class="let">K</span></div>
       <div class="symbol-card" onclick="addSymbol('↿', 'L')"><span class="sym">↿</span><span class="let">L</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛘ', 'M')"><span class="sym">ᛘ</span><span class="let">M</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᚾ', 'N')"><span class="sym">ᚾ</span><span class="let">N</span></div>
+      <div class="symbol-card" onclick="addSymbol('Φ', 'O')"><span class="sym">Φ</span><span class="let">O</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛔ', 'P')"><span class="sym">ᛔ</span><span class="let">P</span></div>
+      <div class="symbol-card" onclick="addSymbol('Ϙ', 'Q')"><span class="sym">Ϙ</span><span class="let">Q</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᚱ', 'R')"><span class="sym">ᚱ</span><span class="let">R</span></div>
       <div class="symbol-card" onclick="addSymbol('ᛋ', 'S')"><span class="sym">ᛋ</span><span class="let">S</span></div>
+      <div class="symbol-card" onclick="addSymbol('Γ', 'T')"><span class="sym">Γ</span><span class="let">T</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᚢ', 'U')"><span class="sym">ᚢ</span><span class="let">U</span></div>
+      <div class="symbol-card" onclick="addSymbol('Ψ', 'V')"><span class="sym">Ψ</span><span class="let">V</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᚥ', 'W')"><span class="sym">ᚥ</span><span class="let">W</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛗ', 'X')"><span class="sym">ᛗ</span><span class="let">X</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛦ', 'Y')"><span class="sym">ᛦ</span><span class="let">Y</span></div>
+      <div class="symbol-card" onclick="addSymbol('ᛯ', 'Z')"><span class="sym">ᛯ</span><span class="let">Z</span></div>
     </div>
   </div>
 
-  <!-- ONGLET 3: DÉCODEUR -->
+  <!-- ONGLET 3: DÉCODEUR INTERACTIF -->
   <div id="tab-decoder" class="tab-content">
     <h2>Décodeur de Symboles</h2>
+    <p style="font-size: 0.8rem; text-align: center; margin-bottom: 8px;">Symboles saisis :</p>
     <div id="input-symbols" class="decoder-display">--</div>
+    
+    <p style="font-size: 0.8rem; text-align: center; margin-bottom: 8px;">Traduction latine :</p>
     <div id="output-text" class="decoder-display" style="color: #6cf;">--</div>
-    <button class="open-grimoire-btn" style="background: var(--red-seal); color: white;" onclick="clearDecoder()">Effacer</button>
+
+    <button class="open-grimoire-btn" style="background: var(--red-seal); color: white; margin-bottom: 10px;" onclick="clearDecoder()">Effacer</button>
+    <button class="open-grimoire-btn" style="background: rgba(0,0,0,0.1); color: var(--ink-dark);" onclick="switchTab('tab-symbols')">+ Ajouter depuis l'alphabet</button>
   </div>
 
   <!-- ONGLET 4: INSTALLATION PWA -->
@@ -193,7 +233,7 @@
     <div class="journal-entry" style="text-align: center;">
       <h2>Conservation du Codex</h2>
       <p style="font-size: 0.9rem; margin-top: 6px;">
-        Installe ce grimoire sur ton appareil pour y accéder <strong>100 % hors-ligne</strong> lors de tes sessions de jeu.
+        Installe ce grimoire sur ton appareil pour y accéder <strong>100 % hors-ligne</strong> lors des sessions de jeu.
       </p>
     </div>
 
@@ -215,7 +255,7 @@
           — DÉMARCHE SUR SAFARI —
         </p>
         <ol style="font-size: 0.85rem; margin-left: 18px; line-height: 1.5; color: var(--ink-dark);">
-          <li>Appuie sur le bouton <strong>Partager</strong> <span style="font-size: 1.1rem;">⎋</span> (barre du bas de Safari).</li>
+          <li>Appuie sur le bouton <strong>Partager</strong> <span style="font-size: 1.1rem;">⎋</span> (barre du bas).</li>
           <li>Fais défiler les options vers le bas.</li>
           <li>Touche <strong>Sur l'écran d'accueil</strong> <span style="font-size: 1.1rem;">⊞</span>.</li>
           <li>Valide en appuyant sur <strong>Ajouter</strong> en haut à droite.</li>
@@ -223,18 +263,18 @@
       </div>
     </div>
 
-    <!-- Message de confirmation -->
+    <!-- Message de confirmation si déjà installé -->
     <div id="already-installed-msg" class="illustration-frame" style="display: none; margin-top: 20px; text-align: center;">
       <p style="font-family: var(--font-title); font-size: 0.85rem; color: var(--gold-accent);">
         ✓ CODEX SCELLÉ
       </p>
       <p style="font-size: 0.85rem; margin-top: 4px;">
-        L'application est déjà installée sur cet appareil et fonctionnelle hors-ligne.
+        L'application est déjà installée sur cet appareil et totalement fonctionnelle hors-ligne.
       </p>
     </div>
   </div>
 
-  <!-- Barre de navigation bas -->
+  <!-- Barre de navigation bas (Marque-pages) -->
   <div class="nav-bookmarks">
     <button class="bookmark-btn active" onclick="switchTab('tab-cover', this)">Couverture</button>
     <button class="bookmark-btn" onclick="switchTab('tab-journal', this)">Journal</button>
@@ -253,10 +293,10 @@
 
   function playSound(audio) {
     audio.currentTime = 0;
-    audio.play().catch(() => {}); // Évite de bloquer si l'utilisateur n'a pas encore interagi
+    audio.play().catch(() => {});
   }
 
-  // Navigation par onglet + QR Code ?page=...
+  // Navigation par onglets
   function switchTab(tabId, btn) {
     playSound(pageSound);
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
@@ -346,16 +386,14 @@
     }
   }
 
-  // Initialisation et lecture des QR codes au chargement
+  // Initialisation et gestion des liens QR Code (?page=...)
   window.addEventListener('DOMContentLoaded', () => {
     initInstallTab();
 
-    // Enregistrement du Service Worker PWA
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
     }
 
-    // Gestion du lien QR code (?page=...)
     const urlParams = new URLSearchParams(window.location.search);
     const targetPage = urlParams.get('page');
 
