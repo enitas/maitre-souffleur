@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codex du Maître Souffleur</title>
+  <title>Carnet du Maître Souffleur</title>
   
   <!-- Configuration PWA -->
   <link rel="manifest" href="manifest.json">
@@ -12,399 +12,571 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="apple-touch-icon" href="icon-192.png">
 
-  <!-- Styles CSS -->
+  <!-- Polices Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=IM+Fell+English:ital@0;1&family=Indie+Flower&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg-dark: #120b08;
-      --paper-bg: #f4e8c1;
-      --paper-border: #8b5a2b;
-      --ink-dark: #2b1810;
+      --leather-dark: #1a0f0a;
+      --leather-main: #2d1810;
+      --leather-border: #4a2818;
       --gold-accent: #c5a059;
-      --red-seal: #8b1e1e;
-      --font-title: 'Georgia', serif;
+      --gold-bright: #e6c687;
+      --parchment-shadow: #c2aa7c;
+      --ink-dark: #1c120c;
+      --ink-red: #8b1e1e;
+      
+      --font-title: 'Cinzel Decorative', serif;
+      --font-body: 'IM Fell English', serif;
+      --font-hand: 'Indie Flower', cursive;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
 
     body {
-      background-color: var(--bg-dark);
+      background-color: var(--leather-dark);
+      background-image: radial-gradient(circle at center, #2a1810 0%, #0d0705 100%);
       color: var(--ink-dark);
-      font-family: 'Times New Roman', serif;
+      font-family: var(--font-body);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 10px;
+      padding: 12px;
     }
 
-    .grimoire-container {
+    /* ETUI EN CUIR SURPIQUÉ */
+    .grimoire-wrapper {
+      background: var(--leather-main);
+      border: 3px solid var(--leather-border);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 
+        0 20px 50px rgba(0,0,0,0.9),
+        inset 0 0 15px rgba(0,0,0,0.8),
+        0 0 0 2px var(--gold-accent);
       width: 100%;
-      max-width: 500px;
-      background: var(--paper-bg);
-      border: 8px solid var(--paper-border);
-      border-radius: 8px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      max-width: 440px;
+      height: 720px;
       position: relative;
       display: flex;
       flex-direction: column;
-      min-height: 650px;
-      overflow: hidden;
     }
 
-    .tab-content { display: none; padding: 20px; flex-grow: 1; }
-    .tab-content.active { display: block; }
+    .grimoire-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 5px; bottom: 5px; left: 5px; right: 5px;
+      border: 1px dashed var(--gold-accent);
+      border-radius: 14px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
 
-    /* En-têtes */
-    h1, h2, h3 { font-family: var(--font-title); color: var(--red-seal); text-align: center; margin-bottom: 12px; }
-    p { line-height: 1.5; margin-bottom: 10px; text-align: justify; }
+    /* FEUILLE DE PARCHEMIN */
+    .parchment {
+      background: linear-gradient(135deg, #f7eed8 0%, #e8d5b5 50%, #d8c29d 100%);
+      border-radius: 8px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        inset 0 0 40px var(--parchment-shadow),
+        inset 0 0 80px rgba(74, 40, 24, 0.3),
+        0 5px 15px rgba(0,0,0,0.5);
+    }
 
-    /* Barre de navigation bas (Marque-pages) */
+    /* En-tête */
+    .header {
+      padding: 18px 12px 10px;
+      text-align: center;
+      border-bottom: 2px solid var(--gold-accent);
+      background: linear-gradient(to bottom, rgba(197, 160, 89, 0.15), transparent);
+    }
+
+    .header h1 {
+      font-family: var(--font-title);
+      font-size: 1.1rem;
+      color: var(--ink-red);
+      text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+      letter-spacing: 1px;
+    }
+
+    .header-decoration {
+      font-size: 0.75rem;
+      color: var(--gold-accent);
+      margin-top: 2px;
+    }
+
+    /* Contenu scrollable */
+    .content-area {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ONGLET COUVERTURE */
+    .cover-box {
+      text-align: center;
+      padding: 20px 10px;
+    }
+
+    .cover-subtitle {
+      font-family: var(--font-title);
+      font-size: 0.75rem;
+      color: var(--gold-accent);
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+    }
+
+    .cover-title {
+      font-family: var(--font-title);
+      font-size: 1.6rem;
+      color: var(--ink-red);
+      line-height: 1.3;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .cover-emblem {
+      width: 110px;
+      height: 110px;
+      margin: 15px auto 25px;
+      border-radius: 50%;
+      border: 3px double var(--gold-accent);
+      background: rgba(139, 30, 30, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .btn-open {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to bottom, #8b1e1e, #681212);
+      color: #f7eed8;
+      border: 1px solid var(--gold-accent);
+      border-radius: 6px;
+      font-family: var(--font-title);
+      font-size: 0.85rem;
+      cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+      transition: transform 0.1s;
+    }
+
+    .btn-open:active {
+      transform: translateY(2px);
+    }
+
+    /* JOURNAL */
+    .journal-entry {
+      margin-bottom: 15px;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .journal-entry h2 {
+      font-family: var(--font-title);
+      font-size: 0.85rem;
+      color: var(--ink-dark);
+      border-bottom: 1px solid var(--ink-dark);
+      padding-bottom: 3px;
+      margin-bottom: 8px;
+    }
+
+    .handwritten {
+      font-family: var(--font-hand);
+      font-size: 1.25rem;
+      color: var(--ink-red);
+    }
+
+    .illustration-frame {
+      border: 2px solid var(--gold-accent);
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 4px;
+      text-align: center;
+      margin: 12px 0;
+    }
+
+    /* GRILLE ALPHABET (26 LETTRES) */
+    .alphabet-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .symbol-card {
+      background: rgba(255, 255, 255, 0.4);
+      border: 1px solid var(--gold-accent);
+      border-radius: 6px;
+      padding: 6px 4px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .symbol-card:active {
+      transform: scale(0.95);
+    }
+
+    .symbol-card .glyph {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--ink-dark);
+      display: block;
+      height: 28px;
+      line-height: 28px;
+    }
+
+    .symbol-card .letter {
+      font-family: var(--font-title);
+      font-size: 0.85rem;
+      color: var(--ink-red);
+      border-top: 1px dotted var(--gold-accent);
+      padding-top: 2px;
+      display: block;
+    }
+
+    /* DÉCODEUR */
+    .decoder-box {
+      background: rgba(0, 0, 0, 0.06);
+      border: 2px solid var(--gold-accent);
+      border-radius: 6px;
+      padding: 12px;
+      min-height: 70px;
+      margin-bottom: 12px;
+    }
+
+    .decoder-display-symbols {
+      font-size: 1.3rem;
+      min-height: 28px;
+      letter-spacing: 3px;
+      word-break: break-all;
+    }
+
+    .decoder-display-text {
+      font-family: var(--font-title);
+      font-size: 1.1rem;
+      color: var(--ink-red);
+      margin-top: 6px;
+      min-height: 24px;
+      border-top: 1px solid rgba(139, 30, 30, 0.2);
+      padding-top: 4px;
+    }
+
+    .keyboard-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+
+    .key-btn {
+      background: linear-gradient(to bottom, #f9f2e3, #e5d3b0);
+      border: 1px solid var(--leather-border);
+      border-radius: 4px;
+      padding: 8px 2px;
+      font-size: 1.1rem;
+      color: var(--ink-dark);
+      cursor: pointer;
+    }
+
+    .key-btn:active {
+      transform: translateY(2px);
+    }
+
+    .action-btn {
+      grid-column: span 2;
+      background: linear-gradient(to bottom, #9b2828, #681212);
+      color: #f7eed8;
+      font-family: var(--font-title);
+      font-size: 0.75rem;
+    }
+
+    /* MARQUE-PAGES EN BAS */
     .nav-bookmarks {
       display: flex;
-      background: #2d1810;
+      background: var(--leather-main);
+      padding: 6px 6px 0;
+      gap: 4px;
       border-top: 2px solid var(--gold-accent);
-      overflow-x: auto;
     }
 
     .bookmark-btn {
       flex: 1;
-      padding: 12px 4px;
-      background: none;
-      border: none;
-      color: #a89078;
+      background: linear-gradient(to bottom, #4a2818, #2d1810);
+      border: 1px solid var(--gold-accent);
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      padding: 10px 2px;
       font-family: var(--font-title);
-      font-size: 0.7rem;
+      font-size: 0.6rem;
+      color: var(--gold-accent);
       cursor: pointer;
-      text-transform: uppercase;
-      white-space: nowrap;
+      text-align: center;
     }
 
     .bookmark-btn.active {
-      color: var(--gold-accent);
-      background: rgba(197, 160, 89, 0.15);
-      border-bottom: 3px solid var(--gold-accent);
+      background: linear-gradient(to bottom, #f7eed8, #e8d5b5);
+      color: var(--ink-red);
       font-weight: bold;
-    }
-
-    /* Grille d'alphabet complet */
-    .symbols-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin-top: 15px;
-      max-height: 420px;
-      overflow-y: auto;
-      padding-right: 4px;
-    }
-
-    .symbol-card {
-      background: rgba(0,0,0,0.04);
-      border: 1px solid var(--paper-border);
-      padding: 8px 4px;
-      text-align: center;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .symbol-card:hover { background: rgba(197, 160, 89, 0.3); }
-    .symbol-card span.sym { font-size: 1.4rem; display: block; font-weight: bold; }
-    .symbol-card span.let { font-size: 0.75rem; color: var(--red-seal); font-weight: bold; }
-
-    /* Zone Décodeur */
-    .decoder-display {
-      background: #1e120c;
-      color: var(--gold-accent);
-      padding: 12px;
-      border-radius: 6px;
-      min-height: 50px;
-      font-family: monospace;
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      text-align: center;
-      word-break: break-all;
-    }
-
-    .open-grimoire-btn {
-      display: block;
-      width: 100%;
-      padding: 12px;
-      background: var(--gold-accent);
-      color: var(--bg-dark);
-      border: 1px solid var(--paper-border);
-      font-family: var(--font-title);
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    .illustration-frame {
-      border: 1px dashed var(--paper-border);
-      padding: 12px;
-      background: rgba(0,0,0,0.02);
-      border-radius: 4px;
+      transform: translateY(-2px);
     }
   </style>
 </head>
 <body>
 
-<div class="grimoire-container">
+  <!-- Sons -->
+  <audio id="sound-page" src="page-turn.mp3" preload="auto"></audio>
+  <audio id="sound-pen" src="quill-write.mp3" preload="auto"></audio>
 
-  <!-- ONGLET 0: PAGE D'ACCUEIL / COUVERTURE MAGNIFIQUE -->
-  <div id="tab-cover" class="tab-content active">
-    <div style="text-align: center; padding-top: 30px;">
-      <p style="letter-spacing: 2px; font-size: 0.8rem; color: var(--paper-border);">— SANCTUAIRE SECRET —</p>
-      <h1 style="font-size: 2.2rem; margin: 15px 0 5px 0;">CODEX DU MAÎTRE</h1>
-      <p style="text-align: center; font-style: italic; color: var(--red-seal);">« Verba volant, scripta manent »</p>
+  <div class="grimoire-wrapper">
+    <div class="parchment">
       
-      <div style="margin: 30px 0;">
-        <span style="font-size: 5rem; color: var(--red-seal); text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🩻</span>
+      <!-- En-tête -->
+      <div class="header">
+        <h1>Codex Obscurum</h1>
+        <div class="header-decoration">✦ — 🗝 — ✦</div>
       </div>
 
-      <div class="illustration-frame" style="margin-bottom: 25px;">
-        <p style="font-size: 0.85rem; text-align: center; margin: 0;">
-          Chronique d'investigation, grille des symboles runiques anciens et traducteur automatique d'énigmes.
-        </p>
+      <!-- Contenu -->
+      <div class="content-area">
+        
+        <!-- ONGLET 0: COUVERTURE DU MAÎTRE SOUFFLEUR -->
+        <div id="tab-cover" class="tab-content active">
+          <div class="cover-box">
+            <div class="cover-subtitle">— CARNET D'ENQUÊTE —</div>
+            <h1 class="cover-title">LE MAÎTRE SOUFFLEUR</h1>
+            
+            <div class="cover-emblem">🩻</div>
+
+            <div class="illustration-frame" style="margin-bottom: 20px;">
+              <p class="handwritten" style="font-size: 1.1rem; color: var(--ink-dark);">
+                « Les symboles du mur révèlent les secrets cachés. Ne laisse aucun indice t'échapper. »
+              </p>
+            </div>
+
+            <button class="btn-open" onclick="switchTab('tab-journal')">Consulter le Journal</button>
+          </div>
+        </div>
+
+        <!-- ONGLET 1: JOURNAL -->
+        <div id="tab-journal" class="tab-content">
+          <div class="journal-entry">
+            <h2>Affaire du Bâtiment Abandonné</h2>
+            <p>Les inscriptions tracées au sang sur le carrelage forment un message codé en runes anciennes.</p>
+          </div>
+          
+          <div class="illustration-frame">
+            <p style="font-family: var(--font-title); font-size: 0.75rem; color: var(--gold-accent);">— GRAVURE RUNITableCell —</p>
+            <p class="handwritten" style="font-size: 1.4rem; margin-top: 4px;">Γ 8 ⋈ Þ Φ Ψ ↿ ᛋ</p>
+          </div>
+
+          <div class="journal-entry">
+            <p class="handwritten">Chaque symbole équivaut à une lettre latine. Utiliser l'onglet "Alphabet" ou le "Décodeur" pour traduire la phrase complète.</p>
+          </div>
+        </div>
+
+        <!-- ONGLET 2: ALPHABET COMPLET (26 LETTRES) -->
+        <div id="tab-symbols" class="tab-content">
+          <p style="text-align: center; font-size: 0.85rem; margin-bottom: 10px; font-style: italic;">Clé de correspondance A–Z :</p>
+          <div class="alphabet-grid" id="alphabet-grid-container"></div>
+        </div>
+
+        <!-- ONGLET 3: DÉCODEUR -->
+        <div id="tab-decoder" class="tab-content">
+          <div class="decoder-box">
+            <div class="decoder-display-symbols" id="input-symbols">--</div>
+            <div class="decoder-display-text" id="output-text">--</div>
+          </div>
+
+          <div class="keyboard-grid" id="keyboard-container"></div>
+        </div>
+
+        <!-- ONGLET 4: INSTALLATION PWA -->
+        <div id="tab-install" class="tab-content">
+          <div class="journal-entry" style="text-align: center;">
+            <h2>Accès Hors-Ligne</h2>
+            <p style="font-size: 0.9rem; margin-top: 8px;">
+              Installe ce carnet sur ton téléphone pour l'utiliser pendant le jeu sans connexion.
+            </p>
+          </div>
+
+          <div id="android-install-section" style="display: none; margin-top: 15px; text-align: center;">
+            <button id="install-pwa-btn" class="btn-open">📲 Installer l'application</button>
+          </div>
+
+          <div id="ios-install-section" style="margin-top: 15px;">
+            <button class="btn-open" style="background: linear-gradient(to bottom, #4a2818, #2d1810);" onclick="toggleIosGuide()">
+              🍎 Guide d'installation iPhone / iPad
+            </button>
+            <div id="ios-install-banner" class="illustration-frame" style="display: none; margin-top: 10px; text-align: left;">
+              <ol style="font-size: 0.85rem; margin-left: 15px; line-height: 1.4;">
+                <li>Touche le bouton <strong>Partager</strong> ⎋ dans Safari.</li>
+                <li>Sélectionne <strong>Sur l'écran d'accueil</strong> ⊞.</li>
+                <li>Appuie sur <strong>Ajouter</strong>.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
       </div>
 
-      <button class="open-grimoire-btn" onclick="switchTab('tab-journal')">Ouvrir le Grimoire</button>
-    </div>
-  </div>
-
-  <!-- ONGLET 1: JOURNAL COMPLET -->
-  <div id="tab-journal" class="tab-content">
-    <h2>Journal d'Investigation</h2>
-    <div class="illustration-frame" style="margin-bottom: 15px;">
-      <p><strong>14 Novembre —</strong> Nous avons découvert les gravures tracées sur le carrelage de la pièce abandonnée. Les symboles semblent appartenir à un alphabet d'initiés combinant d'anciennes runes scandinaves et des signes alchimiques.</p>
-      <p><strong>15 Novembre —</strong> L'accès au sanctuaire des fidèles est protégé par un digicode à 4 chiffres. Le message gravé mentionne les <em>« Quatre Gardiens »</em> : l'Aigle, le Serpent, le Loup et le Taureau.</p>
-    </div>
-  </div>
-
-  <!-- ONGLET 2: ALPHABET RUNIQUE COMPLET (26 LETTRES) -->
-  <div id="tab-symbols" class="tab-content">
-    <h2>Alphabet de Substitution</h2>
-    <p style="font-size: 0.8rem; text-align: center; margin-bottom: 10px;">Cliquez sur un symbole pour le charger dans le décodeur.</p>
-    
-    <div class="symbols-grid">
-      <div class="symbol-card" onclick="addSymbol('ᛅ', 'A')"><span class="sym">ᛅ</span><span class="let">A</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᛒ', 'B')"><span class="sym">ᛒ</span><span class="let">B</span></div>
-      <div class="symbol-card" onclick="addSymbol('⋞', 'C')"><span class="sym">⋞</span><span class="let">C</span></div>
-      <div class="symbol-card" onclick="addSymbol('Þ', 'D')"><span class="sym">Þ</span><span class="let">D</span></div>
-      <div class="symbol-card" onclick="addSymbol('⋈', 'E')"><span class="sym">⋈</span><span class="let">E</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᚠ', 'F')"><span class="sym">ᚠ</span><span class="let">F</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᚵ', 'G')"><span class="sym">ᚵ</span><span class="let">G</span></div>
-      <div class="symbol-card" onclick="addSymbol('8', 'H')"><span class="sym">8</span><span class="let">H</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᛁ', 'I')"><span class="sym">ᛁ</span><span class="let">I</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᛃ', 'J')"><span class="sym">ᛃ</span><span class="let">J</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᚴ', 'K')"><span class="sym">ᚴ</span><span class="let">K</span></div>
-      <div class="symbol-card" onclick="addSymbol('↿', 'L')"><span class="sym">↿</span><span class="let">L</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᛘ', 'M')"><span class="sym">ᛘ</span><span class="let">M</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᚾ', 'N')"><span class="sym">ᚾ</span><span class="let">N</span></div>
-      <div class="symbol-card" onclick="addSymbol('Φ', 'O')"><span class="sym">Φ</span><span class="let">O</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᛔ', 'P')"><span class="sym">ᛔ</span><span class="let">P</span></div>
-      <div class="symbol-card" onclick="addSymbol('Ϙ', 'Q')"><span class="sym">Ϙ</span><span class="let">Q</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᚱ', 'R')"><span class="sym">ᚱ</span><span class="let">R</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᛋ', 'S')"><span class="sym">ᛋ</span><span class="let">S</span></div>
-      <div class="symbol-card" onclick="addSymbol('Γ', 'T')"><span class="sym">Γ</span><span class="let">T</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᚢ', 'U')"><span class="sym">ᚢ</span><span class="let">U</span></div>
-      <div class="symbol-card" onclick="addSymbol('Ψ', 'V')"><span class="sym">Ψ</span><span class="let">V</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᚥ', 'W')"><span class="sym">ᚥ</span><span class="let">W</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᛗ', 'X')"><span class="sym">ᛗ</span><span class="let">X</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᛦ', 'Y')"><span class="sym">ᛦ</span><span class="let">Y</span></div>
-      <div class="symbol-card" onclick="addSymbol('ᛯ', 'Z')"><span class="sym">ᛯ</span><span class="let">Z</span></div>
-    </div>
-  </div>
-
-  <!-- ONGLET 3: DÉCODEUR INTERACTIF -->
-  <div id="tab-decoder" class="tab-content">
-    <h2>Décodeur de Symboles</h2>
-    <p style="font-size: 0.8rem; text-align: center; margin-bottom: 8px;">Symboles saisis :</p>
-    <div id="input-symbols" class="decoder-display">--</div>
-    
-    <p style="font-size: 0.8rem; text-align: center; margin-bottom: 8px;">Traduction latine :</p>
-    <div id="output-text" class="decoder-display" style="color: #6cf;">--</div>
-
-    <button class="open-grimoire-btn" style="background: var(--red-seal); color: white; margin-bottom: 10px;" onclick="clearDecoder()">Effacer</button>
-    <button class="open-grimoire-btn" style="background: rgba(0,0,0,0.1); color: var(--ink-dark);" onclick="switchTab('tab-symbols')">+ Ajouter depuis l'alphabet</button>
-  </div>
-
-  <!-- ONGLET 4: INSTALLATION PWA -->
-  <div id="tab-install" class="tab-content">
-    <div class="journal-entry" style="text-align: center;">
-      <h2>Conservation du Codex</h2>
-      <p style="font-size: 0.9rem; margin-top: 6px;">
-        Installe ce grimoire sur ton appareil pour y accéder <strong>100 % hors-ligne</strong> lors des sessions de jeu.
-      </p>
-    </div>
-
-    <!-- Section Android / Desktop -->
-    <div id="android-install-section" style="display: none; margin-top: 20px; text-align: center;">
-      <button id="install-pwa-btn" class="open-grimoire-btn" style="background: linear-gradient(to bottom, #8b1e1e, #4a0d0d); color: #f7eed8; border-color: var(--gold-accent);">
-        📲 Installer sur Android / PC
-      </button>
-    </div>
-
-    <!-- Section iOS (iPhone) -->
-    <div id="ios-install-section" style="margin-top: 20px;">
-      <button id="ios-guide-toggle-btn" class="open-grimoire-btn" style="background: linear-gradient(to bottom, #4a2818, #2d1810); color: var(--gold-accent); border-color: var(--gold-accent);" onclick="toggleIosGuide()">
-        🍎 Instructions d'installation iOS (iPhone)
-      </button>
-
-      <div id="ios-install-banner" class="illustration-frame" style="display: none; margin-top: 15px; text-align: left; padding: 12px;">
-        <p style="font-family: var(--font-title); font-size: 0.75rem; color: var(--gold-accent); text-align: center; margin-bottom: 8px;">
-          — DÉMARCHE SUR SAFARI —
-        </p>
-        <ol style="font-size: 0.85rem; margin-left: 18px; line-height: 1.5; color: var(--ink-dark);">
-          <li>Appuie sur le bouton <strong>Partager</strong> <span style="font-size: 1.1rem;">⎋</span> (barre du bas).</li>
-          <li>Fais défiler les options vers le bas.</li>
-          <li>Touche <strong>Sur l'écran d'accueil</strong> <span style="font-size: 1.1rem;">⊞</span>.</li>
-          <li>Valide en appuyant sur <strong>Ajouter</strong> en haut à droite.</li>
-        </ol>
+      <!-- Marque-pages bas -->
+      <div class="nav-bookmarks">
+        <button class="bookmark-btn active" onclick="switchTab('tab-cover', this)">Accueil</button>
+        <button class="bookmark-btn" onclick="switchTab('tab-journal', this)">Journal</button>
+        <button class="bookmark-btn" onclick="switchTab('tab-symbols', this)">Alphabet</button>
+        <button class="bookmark-btn" onclick="switchTab('tab-decoder', this)">Décodeur</button>
+        <button class="bookmark-btn" onclick="switchTab('tab-install', this)">Installer</button>
       </div>
-    </div>
 
-    <!-- Message de confirmation si déjà installé -->
-    <div id="already-installed-msg" class="illustration-frame" style="display: none; margin-top: 20px; text-align: center;">
-      <p style="font-family: var(--font-title); font-size: 0.85rem; color: var(--gold-accent);">
-        ✓ CODEX SCELLÉ
-      </p>
-      <p style="font-size: 0.85rem; margin-top: 4px;">
-        L'application est déjà installée sur cet appareil et totalement fonctionnelle hors-ligne.
-      </p>
     </div>
   </div>
 
-  <!-- Barre de navigation bas (Marque-pages) -->
-  <div class="nav-bookmarks">
-    <button class="bookmark-btn active" onclick="switchTab('tab-cover', this)">Couverture</button>
-    <button class="bookmark-btn" onclick="switchTab('tab-journal', this)">Journal</button>
-    <button class="bookmark-btn" onclick="switchTab('tab-symbols', this)">Alphabet</button>
-    <button class="bookmark-btn" onclick="switchTab('tab-decoder', this)">Décodeur</button>
-    <button class="bookmark-btn" onclick="switchTab('tab-install', this)">Installer</button>
-  </div>
+  <script>
+    // Alphabet complet 26 lettres
+    const ALPHABET = [
+      { letter: 'A', symbol: 'ᛅ' }, { letter: 'B', symbol: 'ᛒ' },
+      { letter: 'C', symbol: '⋞' }, { letter: 'D', symbol: 'Þ' },
+      { letter: 'E', symbol: '⋈' }, { letter: 'F', symbol: 'ᚠ' },
+      { letter: 'G', symbol: 'ᚵ' }, { letter: 'H', symbol: '8' },
+      { letter: 'I', symbol: 'ᛁ' }, { letter: 'J', symbol: 'ᛃ' },
+      { letter: 'K', symbol: 'ᚴ' }, { letter: 'L', symbol: '↿' },
+      { letter: 'M', symbol: 'ᛘ' }, { letter: 'N', symbol: 'ᚾ' },
+      { letter: 'O', symbol: 'Φ' }, { letter: 'P', symbol: 'ᛔ' },
+      { letter: 'Q', symbol: 'Ϙ' }, { letter: 'R', symbol: 'ᚱ' },
+      { letter: 'S', symbol: 'ᛋ' }, { letter: 'T', symbol: 'Γ' },
+      { letter: 'U', symbol: 'ᚢ' }, { letter: 'V', symbol: 'Ψ' },
+      { letter: 'W', symbol: 'ᚥ' }, { letter: 'X', symbol: 'ᛗ' },
+      { letter: 'Y', symbol: 'ᛦ' }, { letter: 'Z', symbol: 'ᛯ' }
+    ];
 
-</div>
+    function initApp() {
+      const gridContainer = document.getElementById('alphabet-grid-container');
+      const keyboardContainer = document.getElementById('keyboard-container');
 
-<!-- SCRIPT JAVASCRIPT -->
-<script>
-  // Effets sonores
-  const pageSound = new Audio('page-turn.mp3');
-  const writeSound = new Audio('quill-write.mp3');
+      ALPHABET.forEach(item => {
+        // Grille
+        const card = document.createElement('div');
+        card.className = 'symbol-card';
+        card.innerHTML = `<span class="glyph">${item.symbol}</span><span class="letter">${item.letter}</span>`;
+        card.onclick = () => { addSymbol(item.symbol, item.letter); switchTab('tab-decoder'); };
+        gridContainer.appendChild(card);
 
-  function playSound(audio) {
-    audio.currentTime = 0;
-    audio.play().catch(() => {});
-  }
+        // Clavier
+        const btn = document.createElement('button');
+        btn.className = 'key-btn';
+        btn.innerText = item.symbol;
+        btn.onclick = () => addSymbol(item.symbol, item.letter);
+        keyboardContainer.appendChild(btn);
+      });
 
-  // Navigation par onglets
-  function switchTab(tabId, btn) {
-    playSound(pageSound);
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.bookmark-btn').forEach(b => b.classList.remove('active'));
-    
-    const targetTab = document.getElementById(tabId);
-    if (targetTab) targetTab.classList.add('active');
+      // Boutons clavier
+      const spaceBtn = document.createElement('button');
+      spaceBtn.className = 'key-btn action-btn';
+      spaceBtn.innerText = 'Espace';
+      spaceBtn.onclick = () => addSymbol(' ', ' ');
 
-    if (btn) {
-      btn.classList.add('active');
-    } else {
-      const defaultBtn = document.querySelector(`.bookmark-btn[onclick*="${tabId}"]`);
-      if (defaultBtn) defaultBtn.classList.add('active');
+      const clearBtn = document.createElement('button');
+      clearBtn.className = 'key-btn action-btn';
+      clearBtn.innerText = 'Effacer';
+      clearBtn.onclick = () => clearDecoder();
+
+      keyboardContainer.appendChild(spaceBtn);
+      keyboardContainer.appendChild(clearBtn);
     }
-  }
 
-  // Logique du décodeur
-  let currentSymbols = [];
-  let currentTranslation = [];
+    // Sons et navigation
+    const soundPage = document.getElementById('sound-page');
+    const soundPen = document.getElementById('sound-pen');
 
-  function addSymbol(symbol, letter) {
-    playSound(writeSound);
-    if (currentSymbols.length === 0) {
+    function playSound(audio) {
+      if (audio) { audio.currentTime = 0; audio.play().catch(() => {}); }
+    }
+
+    function switchTab(tabId, btn) {
+      playSound(soundPage);
+      document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+      document.querySelectorAll('.bookmark-btn').forEach(b => b.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      if (btn) {
+        btn.classList.add('active');
+      } else {
+        const defaultBtn = document.querySelector(`.bookmark-btn[onclick*="${tabId}"]`);
+        if (defaultBtn) defaultBtn.classList.add('active');
+      }
+    }
+
+    // Décodeur
+    let currentSymbols = [];
+    let currentTranslation = [];
+
+    function addSymbol(symbol, letter) {
+      playSound(soundPen);
+      currentSymbols.push(symbol);
+      currentTranslation.push(letter);
+      document.getElementById('input-symbols').innerText = currentSymbols.join(' ');
+      document.getElementById('output-text').innerText = currentTranslation.join('');
+    }
+
+    function clearDecoder() {
+      playSound(soundPage);
       currentSymbols = [];
       currentTranslation = [];
+      document.getElementById('input-symbols').innerText = '--';
+      document.getElementById('output-text').innerText = '--';
     }
-    currentSymbols.push(symbol);
-    currentTranslation.push(letter);
 
-    document.getElementById('input-symbols').innerText = currentSymbols.join(' ');
-    document.getElementById('output-text').innerText = currentTranslation.join('');
-  }
-
-  function clearDecoder() {
-    playSound(pageSound);
-    currentSymbols = [];
-    currentTranslation = [];
-    document.getElementById('input-symbols').innerText = '--';
-    document.getElementById('output-text').innerText = '--';
-  }
-
-  // Gestion PWA & Installation
-  let deferredPrompt;
-
-  function initInstallTab() {
-    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
-
-    const androidSection = document.getElementById('android-install-section');
-    const iosSection = document.getElementById('ios-install-section');
-    const installedMsg = document.getElementById('already-installed-msg');
-
-    if (isStandalone) {
-      if (androidSection) androidSection.style.display = 'none';
-      if (iosSection) iosSection.style.display = 'none';
-      if (installedMsg) installedMsg.style.display = 'block';
-    } else if (isIos) {
-      if (iosSection) iosSection.style.display = 'block';
+    function toggleIosGuide() {
+      playSound(soundPage);
+      const banner = document.getElementById('ios-install-banner');
+      banner.style.display = banner.style.display === 'none' ? 'block' : 'none';
     }
-  }
 
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    const androidSection = document.getElementById('android-install-section');
-    if (androidSection) androidSection.style.display = 'block';
-  });
+    // Paramètres URL / QR Code
+    window.addEventListener('DOMContentLoaded', () => {
+      initApp();
 
-  document.addEventListener('click', async (e) => {
-    if (e.target && e.target.id === 'install-pwa-btn') {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        document.getElementById('android-install-section').style.display = 'none';
-        document.getElementById('already-installed-msg').style.display = 'block';
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
       }
-      deferredPrompt = null;
-    }
-  });
 
-  function toggleIosGuide() {
-    playSound(pageSound);
-    const banner = document.getElementById('ios-install-banner');
-    if (banner) {
-      banner.style.display = (banner.style.display === 'none' || banner.style.display === '') ? 'block' : 'none';
-    }
-  }
-
-  // Initialisation et gestion des liens QR Code (?page=...)
-  window.addEventListener('DOMContentLoaded', () => {
-    initInstallTab();
-
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
-    }
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetPage = urlParams.get('page');
-
-    if (targetPage) {
-      if (targetPage === 'journal') switchTab('tab-journal');
-      if (targetPage === 'symbols') switchTab('tab-symbols');
-      if (targetPage === 'decoder') switchTab('tab-decoder');
-      if (targetPage === 'install') switchTab('tab-install');
-    }
-  });
-</script>
-
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetPage = urlParams.get('page');
+      if (targetPage) {
+        const tabMap = { 'journal': 'tab-journal', 'symbols': 'tab-symbols', 'decoder': 'tab-decoder', 'install': 'tab-install' };
+        if (tabMap[targetPage]) switchTab(tabMap[targetPage]);
+      }
+    });
+  </script>
 </body>
 </html>
