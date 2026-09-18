@@ -1,8 +1,9 @@
-const CACHE_NAME = 'grimoire-codex-v3';
+const CACHE_NAME = 'grimoire-codex-v5';
 const ASSETS = [
   './',
   './index.html',
   './manifest.json',
+  './registre.png',
   './page-turn.mp3',
   './quill-write.mp3'
 ];
@@ -16,7 +17,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activation : Nettoyage des anciens caches s'il y en a
+// Activation : Nettoyage des anciens caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) => {
@@ -31,7 +32,7 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Interception des requêtes (Stratégie Cache d'abord)
+// Interception des requêtes (Cache d'abord)
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {

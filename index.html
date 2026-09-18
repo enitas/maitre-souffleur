@@ -200,18 +200,103 @@
       background: linear-gradient(135deg, #f5e9ce 0%, #e2ceaa 100%);
       color: #1a0c06;
       flex: 1;
-      padding: 20px;
+      padding: 16px;
       overflow-y: auto;
     }
 
     .internal-page h2 {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--ink-red);
       text-align: center;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
       border-bottom: 1px solid var(--gold-dark);
-      padding-bottom: 5px;
+      padding-bottom: 4px;
     }
+
+    /* STYLE PAGE REGISTRE */
+    .register-image-wrapper {
+      position: relative;
+      border: 2px solid var(--gold-dark);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      background: #000;
+      margin-bottom: 8px;
+    }
+
+    .register-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .register-quote {
+      border: 1px dashed var(--gold-dark);
+      padding: 8px;
+      text-align: center;
+      font-style: italic;
+      font-family: 'Playfair Display', serif;
+      background: rgba(0,0,0,0.04);
+      color: var(--ink-red);
+      font-size: 0.8rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    /* FORMULAIRE DE RÉPONSE DISCRET */
+    .riddle-answer-box {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .riddle-input {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--gold-dark);
+      border-radius: 4px;
+      padding: 8px 10px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      color: #1a0c06;
+      text-transform: uppercase;
+      outline: none;
+      user-select: text;
+    }
+
+    .riddle-input:focus {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: var(--ink-red);
+    }
+
+    .riddle-btn {
+      background: linear-gradient(180deg, #7a581e 0%, #4a330e 100%);
+      border: 1px solid var(--gold-mid);
+      color: #fce3a6;
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .riddle-btn:active {
+      transform: scale(0.96);
+    }
+
+    .riddle-feedback {
+      font-size: 0.75rem;
+      text-align: center;
+      font-weight: bold;
+      min-height: 18px;
+      margin-top: 2px;
+    }
+
+    .riddle-feedback.success { color: #1e6b20; }
+    .riddle-feedback.error { color: var(--ink-red); }
 
     .alphabet-grid {
       display: grid;
@@ -258,12 +343,12 @@
       cursor: pointer;
     }
 
-    /* BARRE DE NAVIGATION (5 ONGLETS) */
+    /* BARRE DE NAVIGATION (6 ONGLETS) */
     .nav-bookmarks {
       display: flex;
       background: #0d0301;
-      padding: 6px 4px 0;
-      gap: 3px;
+      padding: 6px 2px 0;
+      gap: 2px;
       border-top: 1px solid rgba(205, 162, 82, 0.25);
       z-index: 20;
     }
@@ -273,16 +358,18 @@
       background: linear-gradient(180deg, #2b0e06 0%, #120401 100%);
       border: 1px solid rgba(205, 162, 82, 0.4);
       border-bottom: none;
-      border-radius: 6px 6px 0 0;
-      padding: 10px 1px;
+      border-radius: 5px 5px 0 0;
+      padding: 9px 0;
       font-family: 'Cinzel', serif;
-      font-size: 0.55rem;
+      font-size: 0.48rem;
       font-weight: 600;
-      letter-spacing: 0.3px;
+      letter-spacing: 0px;
       color: #c7a052;
       cursor: pointer;
       text-align: center;
       text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .bookmark-btn.active {
@@ -331,7 +418,28 @@
             </div>
           </div>
 
-          <!-- ONGLET 3 : ALPHABET -->
+          <!-- ONGLET 3 : REGISTRE DES ÉTEINTS -->
+          <div id="tab-registre" class="tab-content">
+            <div class="internal-page">
+              <h2>Registre des Éteints</h2>
+              <div class="register-image-wrapper">
+                <img src="registre.png" alt="Registre des Éteints" class="register-image">
+              </div>
+              
+              <div class="register-quote">
+                « LA CLEF EST DANS LE DERNIER SOUFFLE »
+              </div>
+
+              <!-- CHAMP DE RÉPONSE DISCRET -->
+              <div class="riddle-answer-box">
+                <input type="text" id="riddle-input" class="riddle-input" placeholder="Saisir le mot secret..." autocomplete="off">
+                <button class="riddle-btn" onclick="validateRiddle()">Valider</button>
+              </div>
+              <div id="riddle-feedback" class="riddle-feedback"></div>
+            </div>
+          </div>
+
+          <!-- ONGLET 4 : ALPHABET -->
           <div id="tab-symbols" class="tab-content">
             <div class="internal-page">
               <h2>Alphabet de Substitution</h2>
@@ -339,7 +447,7 @@
             </div>
           </div>
 
-          <!-- ONGLET 4 : DÉCODEUR -->
+          <!-- ONGLET 5 : DÉCODEUR -->
           <div id="tab-decoder" class="tab-content">
             <div class="internal-page">
               <h2>Décodeur Automatique</h2>
@@ -351,12 +459,12 @@
             </div>
           </div>
 
-          <!-- ONGLET 5 : INSTALLATION PWA -->
+          <!-- ONGLET 6 : INSTALLATION PWA -->
           <div id="tab-install" class="tab-content">
             <div class="internal-page" style="text-align: center;">
               <h2>Application Hors-Ligne</h2>
               <p style="font-size: 0.85rem; margin-top: 10px; line-height: 1.4;">
-                Installez ce carnet sur l'écran d'accueil de votre téléphone pour y accéder sans connexion Internet pendant l'enquête.
+                Installez ce carnet sur l'écran d'accueil de votre téléphone pour y accéder sans connexion Internet.
               </p>
               
               <div style="margin-top: 25px; border: 1px dashed #7a581e; padding: 15px; background: rgba(0,0,0,0.03);">
@@ -373,10 +481,11 @@
 
         </div>
 
-        <!-- BARRE DE NAVIGATION (5 ONGLETS) -->
+        <!-- BARRE DE NAVIGATION (6 ONGLETS) -->
         <div class="nav-bookmarks">
-          <button class="bookmark-btn active" onclick="switchTab('tab-cover', this)">COUVERTURE</button>
+          <button class="bookmark-btn active" onclick="switchTab('tab-cover', this)">ACCUEIL</button>
           <button class="bookmark-btn" onclick="switchTab('tab-journal', this)">JOURNAL</button>
+          <button class="bookmark-btn" onclick="switchTab('tab-registre', this)">REGISTRE</button>
           <button class="bookmark-btn" onclick="switchTab('tab-symbols', this)">ALPHABET</button>
           <button class="bookmark-btn" onclick="switchTab('tab-decoder', this)">DÉCODEUR</button>
           <button class="bookmark-btn" onclick="switchTab('tab-install', this)">INSTALLER</button>
@@ -424,6 +533,24 @@
         }
       } catch (e) {
         console.log('Erreur Audio:', e);
+      }
+    }
+
+    // --- VALIDATION DE L'ÉNIGME REGISTRE ---
+    function validateRiddle() {
+      playSound('write');
+      const input = document.getElementById('riddle-input').value.trim().toUpperCase();
+      const feedback = document.getElementById('riddle-feedback');
+
+      if (input === 'SOUFFLE') {
+        feedback.innerText = '✓ La clef a été révélée. Le sceau est brisé.';
+        feedback.className = 'riddle-feedback success';
+      } else if (input === '') {
+        feedback.innerText = 'Veuillez saisir un mot.';
+        feedback.className = 'riddle-feedback error';
+      } else {
+        feedback.innerText = '✗ Le cadenas demeure scellé...';
+        feedback.className = 'riddle-feedback error';
       }
     }
 
@@ -491,6 +618,13 @@
 
       keyboardContainer.appendChild(spaceBtn);
       keyboardContainer.appendChild(clearBtn);
+
+      // Support touche 'Entrée' pour le champ texte
+      document.getElementById('riddle-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          validateRiddle();
+        }
+      });
     }
 
     function switchTab(tabId, btn) {
